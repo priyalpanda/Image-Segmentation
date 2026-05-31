@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Segmentation observation report — yolo</title>
+  <style>
+    body { font-family: Segoe UI, Arial, sans-serif; margin: 24px; color: #222; }
+    h1 { margin-bottom: 0.2em; }
+    .meta { color: #555; margin-bottom: 24px; }
+    .cards { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+    .card { background: #f4f6f8; border-radius: 8px; padding: 14px 18px; min-width: 140px; }
+    .card strong { display: block; font-size: 1.4em; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { border: 1px solid #ddd; padding: 8px; vertical-align: top; text-align: left; }
+    th { background: #2c3e50; color: #fff; }
+    .badge { display: inline-block; color: #fff; padding: 2px 8px; border-radius: 4px; margin: 2px 4px 2px 0; font-size: 12px; }
+    .callout { border-left: 4px solid #c0392b; background: #fdf2f2; padding: 12px 16px; margin-bottom: 24px; }
+    .callout.critical { border-color: #c0392b; }
+    ul { margin: 8px 0 0 20px; }
+    .category-block { background: #fafbfc; border: 1px solid #e1e4e8; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .category-block h2 { margin-top: 0; font-size: 1.15em; }
+    .category-block .count { color: #666; font-weight: normal; font-size: 0.9em; }
+    .cat-why { background: #fff; padding: 10px; border-radius: 6px; border-left: 3px solid #3498db; }
+    .signals { font-size: 13px; color: #555; }
+  </style>
+</head>
+<body>
+  <h1>Segmentation struggle report</h1>
+  <p class="meta">Model: <strong>yolo</strong> ·
+  Source: evaluation.json ·
+  Low IoU threshold: 0.5</p>
+
+  <div class="cards">
+    <div class="card"><span>Struggling images</span><strong>60</strong></div>
+    <div class="card"><span>Critical</span><strong>3</strong></div>
+    <div class="card"><span>High</span><strong>57</strong></div>
+    <div class="card"><span>Eval avg IoU</span><strong>0.5923</strong></div>
+  </div>
+  <p class="meta">Showing <strong>critical</strong> and <strong>high</strong> severity only; medium issues are excluded.</p>
+
+  <section>
+    <h2>Struggle categories</h2>
+    <p>Images are grouped by the dominant failure mode. Cluttered scenes use ≥
+    <strong>10</strong> ground-truth instances (75th percentile of your dataset).</p>
+    
+            <section class="category-block" id="no_segmentation_output">
+              <h2>No segmentation output <span class="count">(3 images)</span></h2>
+              <p class="cat-summary">The model produced no masks or no label file for these images.</p>
+              <p class="cat-why"><strong>Why the model struggles:</strong> Without predictions there is nothing to compare to ground truth. Common causes: confidence threshold too high, image content unlike training data, or pipeline did not write labels.</p>
+              <p class="signals">Typical signals — avg IoU: 0.0, "
+              "avg FN: 0.33, avg GT instances: 0.33</p>
+              <details>
+                <summary>Example images (3 shown)</summary>
+                <ul><li><code>000000000514.jpg</code> — IoU 0.00, FN 1, GT 1: No prediction instances (GT=1, pred=0). Model produced no instances while ground truth has 1 instance(s). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth.</li><li><code>000000000250.jpg</code> — IoU 0.00, FN 0, GT 0: No prediction instances (GT=0, pred=0). No segmentation output (empty labels). Listed under missing_groundtruth — no ground-truth file to compare against. No ground-truth label file for this image; metrics are not fully comparable. Instance count or class alignment does not match ground truth.</li><li><code>000000000508.jpg</code> — IoU 0.00, FN 0, GT 0: No prediction instances (GT=0, pred=0). No segmentation output (empty labels). Listed under missing_groundtruth — no ground-truth file to compare against. No ground-truth label file for this image; metrics are not fully comparable. Instance count or class alignment does not match ground truth.</li></ul>
+              </details>
+            </section>
+            
+            <section class="category-block" id="unevaluable_no_groundtruth">
+              <h2>Cannot evaluate (no ground truth) <span class="count">(1 images)</span></h2>
+              <p class="cat-summary">Predictions exist but there is no matching ground-truth label file.</p>
+              <p class="cat-why"><strong>Why the model struggles:</strong> Metrics are not meaningful without GT. These cases are flagged so they are not confused with model performance on labeled data.</p>
+              <p class="signals">Typical signals — avg IoU: 0.0, "
+              "avg FN: 0.0, avg GT instances: 0.0</p>
+              <details>
+                <summary>Example images (1 shown)</summary>
+                <ul><li><code>sample.jpg</code> — IoU 0.00, FN 0, GT 0: No ground-truth labels available for this image; segmentation output cannot be scored.</li></ul>
+              </details>
+            </section>
+            
+            <section class="category-block" id="cluttered_scene_low_iou">
+              <h2>Heavily cluttered — low mask overlap <span class="count">(4 images)</span></h2>
+              <p class="cat-summary">Many objects in the scene and low average IoU on matched instances.</p>
+              <p class="cat-why"><strong>Why the model struggles:</strong> Crowded scenes with overlapping instances make instance boundaries hard to separate. The model may detect some objects but mask shapes overlap poorly with ground truth, driving IoU down.</p>
+              <p class="signals">Typical signals — avg IoU: 0.0, "
+              "avg FN: 16.0, avg GT instances: 16.0</p>
+              <details>
+                <summary>Example images (4 shown)</summary>
+                <ul><li><code>000000000149.jpg</code> — IoU 0.00, FN 22, GT 22: 22 GT instances (cluttered, ≥10); average IoU 0.00 — dense overlap likely hurts mask quality.</li><li><code>000000000643.jpg</code> — IoU 0.00, FN 20, GT 20: 20 GT instances (cluttered, ≥10); average IoU 0.00 — dense overlap likely hurts mask quality.</li><li><code>000000000520.jpg</code> — IoU 0.00, FN 11, GT 11: 11 GT instances (cluttered, ≥10); average IoU 0.00 — dense overlap likely hurts mask quality.</li><li><code>000000000536.jpg</code> — IoU 0.00, FN 11, GT 11: 11 GT instances (cluttered, ≥10); average IoU 0.00 — dense overlap likely hurts mask quality.</li></ul>
+              </details>
+            </section>
+            
+            <section class="category-block" id="cluttered_scene_missed_instances">
+              <h2>Heavily cluttered — many missed objects <span class="count">(25 images)</span></h2>
+              <p class="cat-summary">Dense scenes where the model misses a large share of ground-truth instances.</p>
+              <p class="cat-why"><strong>Why the model struggles:</strong> High instance count increases occlusion and competition between detections. The model often finds the salient objects but fails to recall smaller or partially hidden instances (high false negatives).</p>
+              <p class="signals">Typical signals — avg IoU: 0.7127, "
+              "avg FN: 14.12, avg GT instances: 19.0</p>
+              <details>
+                <summary>Example images (5 shown)</summary>
+                <ul><li><code>000000000164.jpg</code> — IoU 0.78, FN 37, GT 40: 40 GT instances (cluttered); 37 missed (92% of GT) — model recalls only part of the crowded scene.</li><li><code>000000000315.jpg</code> — IoU 0.68, FN 33, GT 38: 38 GT instances (cluttered); 33 missed (87% of GT) — model recalls only part of the crowded scene.</li><li><code>000000000196.jpg</code> — IoU 0.75, FN 30, GT 42: 42 GT instances (cluttered); 30 missed (71% of GT) — model recalls only part of the crowded scene.</li><li><code>000000000257.jpg</code> — IoU 0.68, FN 22, GT 33: 33 GT instances (cluttered); 22 missed (67% of GT) — model recalls only part of the crowded scene.</li><li><code>000000000540.jpg</code> — IoU 0.53, FN 19, GT 20: 20 GT instances (cluttered); 19 missed (95% of GT) — model recalls only part of the crowded scene.</li></ul>
+              </details>
+            </section>
+            
+            <section class="category-block" id="total_mask_mismatch">
+              <h2>Detections present but masks do not match <span class="count">(19 images)</span></h2>
+              <p class="cat-summary">Both GT and predictions exist, but matched IoU is zero.</p>
+              <p class="cat-why"><strong>Why the model struggles:</strong> The model sees something in the image but segment boundaries or classes do not align with any GT instance at the IoU threshold — wrong object, wrong region, or systematic coordinate/scale mismatch.</p>
+              <p class="signals">Typical signals — avg IoU: 0.0, "
+              "avg FN: 3.79, avg GT instances: 3.79</p>
+              <details>
+                <summary>Example images (5 shown)</summary>
+                <ul><li><code>000000000049.jpg</code> — IoU 0.00, FN 9, GT 9: GT=9, pred=9, but zero IoU on matches — detections do not align with any GT mask.</li><li><code>000000000077.jpg</code> — IoU 0.00, FN 8, GT 8: GT=8, pred=4, but zero IoU on matches — detections do not align with any GT mask.</li><li><code>000000000260.jpg</code> — IoU 0.00, FN 7, GT 7: GT=7, pred=7, but zero IoU on matches — detections do not align with any GT mask.</li><li><code>000000000061.jpg</code> — IoU 0.00, FN 5, GT 5: GT=5, pred=3, but zero IoU on matches — detections do not align with any GT mask.</li><li><code>000000000560.jpg</code> — IoU 0.00, FN 5, GT 5: GT=5, pred=3, but zero IoU on matches — detections do not align with any GT mask.</li></ul>
+              </details>
+            </section>
+            
+            <section class="category-block" id="severe_under_detection">
+              <h2>Severe under-detection <span class="count">(8 images)</span></h2>
+              <p class="cat-summary">Very high false negatives relative to the number of objects.</p>
+              <p class="cat-why"><strong>Why the model struggles:</strong> The model captures only a fraction of labeled instances. Often seen in busy images, small objects, or classes the weights handle poorly.</p>
+              <p class="signals">Typical signals — avg IoU: 0.7408, "
+              "avg FN: 5.75, avg GT instances: 7.75</p>
+              <details>
+                <summary>Example images (5 shown)</summary>
+                <ul><li><code>000000000247.jpg</code> — IoU 0.76, FN 7, GT 8: 7 of 8 instances missed (88%) — severe recall failure.</li><li><code>000000000486.jpg</code> — IoU 0.76, FN 7, GT 8: 7 of 8 instances missed (88%) — severe recall failure.</li><li><code>000000000109.jpg</code> — IoU 0.57, FN 6, GT 8: 6 of 8 instances missed (75%) — severe recall failure.</li><li><code>000000000074.jpg</code> — IoU 0.78, FN 6, GT 8: 6 of 8 instances missed (75%) — severe recall failure.</li><li><code>000000000419.jpg</code> — IoU 0.68, FN 5, GT 7: 5 of 7 instances missed (71%) — severe recall failure.</li></ul>
+              </details>
+            </section>
+            
+  </section>
+
+  <section>
+    <h2>Issue tags (technical)</h2>
+    <ul><li><strong>low_iou</strong>: 25 image(s)</li><li><strong>false_negative</strong>: 56 image(s)</li><li><strong>classification_error</strong>: 60 image(s)</li><li><strong>no_segmentation</strong>: 3 image(s)</li><li><strong>no_groundtruth</strong>: 3 image(s)</li><li><strong>false_positive</strong>: 56 image(s)</li></ul>
+  </section>
+
+  <section>
+    <h2>All struggling images</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Image</th><th>Category</th><th>Severity</th><th>Issues</th><th>IoU</th><th>FN</th><th>FP</th>
+          <th>Class OK</th><th>GT #</th><th>Pred #</th><th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+            <tr class="critical" style="background:#fdecea">
+              <td>000000000514.jpg</td>
+              <td>No segmentation output</td>
+              <td><strong>critical</strong></td>
+              <td><span class="badge" style="background:#c0392b">no_segmentation</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span></td>
+              <td>0.0000</td>
+              <td>1</td>
+              <td>0</td>
+              <td>no</td>
+              <td>1</td>
+              <td>0</td>
+              <td>Model produced no instances while ground truth has 1 instance(s). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth.</td>
+            </tr>
+            
+            <tr class="critical" style="background:#fdecea">
+              <td>000000000250.jpg</td>
+              <td>No segmentation output</td>
+              <td><strong>critical</strong></td>
+              <td><span class="badge" style="background:#c0392b">no_segmentation</span><span class="badge" style="background:#8e44ad">no_groundtruth</span><span class="badge" style="background:#2980b9">classification_error</span></td>
+              <td>0.0000</td>
+              <td>0</td>
+              <td>0</td>
+              <td>no</td>
+              <td>0</td>
+              <td>0</td>
+              <td>No segmentation output (empty labels). Listed under missing_groundtruth — no ground-truth file to compare against. No ground-truth label file for this image; metrics are not fully comparable. Instance count or class alignment does not match ground truth.</td>
+            </tr>
+            
+            <tr class="critical" style="background:#fdecea">
+              <td>000000000508.jpg</td>
+              <td>No segmentation output</td>
+              <td><strong>critical</strong></td>
+              <td><span class="badge" style="background:#c0392b">no_segmentation</span><span class="badge" style="background:#8e44ad">no_groundtruth</span><span class="badge" style="background:#2980b9">classification_error</span></td>
+              <td>0.0000</td>
+              <td>0</td>
+              <td>0</td>
+              <td>no</td>
+              <td>0</td>
+              <td>0</td>
+              <td>No segmentation output (empty labels). Listed under missing_groundtruth — no ground-truth file to compare against. No ground-truth label file for this image; metrics are not fully comparable. Instance count or class alignment does not match ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000149.jpg</div><img src="images/000000000149_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — low mask overlap</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>22</td>
+              <td>6</td>
+              <td>no</td>
+              <td>22</td>
+              <td>6</td>
+              <td>22 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 6 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000643.jpg</div><img src="images/000000000643_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — low mask overlap</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>20</td>
+              <td>5</td>
+              <td>no</td>
+              <td>20</td>
+              <td>5</td>
+              <td>20 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 5 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000520.jpg</div><img src="images/000000000520_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — low mask overlap</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>11</td>
+              <td>6</td>
+              <td>no</td>
+              <td>11</td>
+              <td>6</td>
+              <td>11 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 6 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000536.jpg</div><img src="images/000000000536_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — low mask overlap</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>11</td>
+              <td>4</td>
+              <td>no</td>
+              <td>11</td>
+              <td>4</td>
+              <td>11 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 4 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000164.jpg</div><img src="images/000000000164_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.7841</td>
+              <td>37</td>
+              <td>6</td>
+              <td>no</td>
+              <td>40</td>
+              <td>9</td>
+              <td>37 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 6 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000315.jpg</div><img src="images/000000000315_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.6842</td>
+              <td>33</td>
+              <td>8</td>
+              <td>no</td>
+              <td>38</td>
+              <td>13</td>
+              <td>33 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 8 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000196.jpg</div><img src="images/000000000196_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.7465</td>
+              <td>30</td>
+              <td>5</td>
+              <td>no</td>
+              <td>42</td>
+              <td>17</td>
+              <td>30 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 5 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000257.jpg</div><img src="images/000000000257_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.6803</td>
+              <td>22</td>
+              <td>10</td>
+              <td>no</td>
+              <td>33</td>
+              <td>22</td>
+              <td>22 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 10 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000540.jpg</div><img src="images/000000000540_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span></td>
+              <td>0.5345</td>
+              <td>19</td>
+              <td>0</td>
+              <td>no</td>
+              <td>20</td>
+              <td>1</td>
+              <td>19 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000294.jpg</div><img src="images/000000000294_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.8701</td>
+              <td>18</td>
+              <td>1</td>
+              <td>no</td>
+              <td>20</td>
+              <td>3</td>
+              <td>18 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 1 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000071.jpg</div><img src="images/000000000071_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.5549</td>
+              <td>15</td>
+              <td>3</td>
+              <td>no</td>
+              <td>16</td>
+              <td>5</td>
+              <td>15 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000127.jpg</div><img src="images/000000000127_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.7052</td>
+              <td>15</td>
+              <td>8</td>
+              <td>no</td>
+              <td>17</td>
+              <td>10</td>
+              <td>15 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 8 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000110.jpg</div><img src="images/000000000110_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.7327</td>
+              <td>13</td>
+              <td>6</td>
+              <td>no</td>
+              <td>24</td>
+              <td>18</td>
+              <td>13 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 6 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000113.jpg</div><img src="images/000000000113_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.8275</td>
+              <td>12</td>
+              <td>2</td>
+              <td>no</td>
+              <td>18</td>
+              <td>8</td>
+              <td>12 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000564.jpg</div><img src="images/000000000564_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.5757</td>
+              <td>12</td>
+              <td>34</td>
+              <td>no</td>
+              <td>16</td>
+              <td>38</td>
+              <td>12 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 34 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000357.jpg</div><img src="images/000000000357_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.5745</td>
+              <td>11</td>
+              <td>4</td>
+              <td>no</td>
+              <td>17</td>
+              <td>10</td>
+              <td>11 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 4 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000446.jpg</div><img src="images/000000000446_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.7453</td>
+              <td>11</td>
+              <td>2</td>
+              <td>no</td>
+              <td>13</td>
+              <td>4</td>
+              <td>11 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000531.jpg</div><img src="images/000000000531_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.6189</td>
+              <td>11</td>
+              <td>6</td>
+              <td>no</td>
+              <td>15</td>
+              <td>10</td>
+              <td>11 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 6 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000542.jpg</div><img src="images/000000000542_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.6459</td>
+              <td>11</td>
+              <td>5</td>
+              <td>no</td>
+              <td>17</td>
+              <td>12</td>
+              <td>11 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 5 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000641.jpg</div><img src="images/000000000641_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.8175</td>
+              <td>11</td>
+              <td>3</td>
+              <td>no</td>
+              <td>12</td>
+              <td>4</td>
+              <td>11 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000544.jpg</div><img src="images/000000000544_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.6091</td>
+              <td>10</td>
+              <td>3</td>
+              <td>no</td>
+              <td>16</td>
+              <td>9</td>
+              <td>10 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000584.jpg</div><img src="images/000000000584_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.7160</td>
+              <td>10</td>
+              <td>2</td>
+              <td>no</td>
+              <td>14</td>
+              <td>6</td>
+              <td>10 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000328.jpg</div><img src="images/000000000328_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.7963</td>
+              <td>9</td>
+              <td>1</td>
+              <td>no</td>
+              <td>11</td>
+              <td>3</td>
+              <td>9 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 1 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000384.jpg</div><img src="images/000000000384_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.7792</td>
+              <td>9</td>
+              <td>3</td>
+              <td>no</td>
+              <td>11</td>
+              <td>5</td>
+              <td>9 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000389.jpg</div><img src="images/000000000389_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.7933</td>
+              <td>8</td>
+              <td>4</td>
+              <td>no</td>
+              <td>14</td>
+              <td>10</td>
+              <td>8 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 4 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000395.jpg</div><img src="images/000000000395_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.7418</td>
+              <td>8</td>
+              <td>5</td>
+              <td>no</td>
+              <td>13</td>
+              <td>10</td>
+              <td>8 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 5 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000612.jpg</div><img src="images/000000000612_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.8561</td>
+              <td>8</td>
+              <td>3</td>
+              <td>no</td>
+              <td>11</td>
+              <td>6</td>
+              <td>8 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000241.jpg</div><img src="images/000000000241_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.7986</td>
+              <td>5</td>
+              <td>2</td>
+              <td>no</td>
+              <td>14</td>
+              <td>11</td>
+              <td>5 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000308.jpg</div><img src="images/000000000308_segmented.png" alt="segmented" width="160" /></td>
+              <td>Heavily cluttered — many missed objects</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.6292</td>
+              <td>5</td>
+              <td>6</td>
+              <td>no</td>
+              <td>13</td>
+              <td>15</td>
+              <td>5 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 6 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000247.jpg</div><img src="images/000000000247_segmented.png" alt="segmented" width="160" /></td>
+              <td>Severe under-detection</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.7552</td>
+              <td>7</td>
+              <td>2</td>
+              <td>no</td>
+              <td>8</td>
+              <td>3</td>
+              <td>7 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000486.jpg</div><img src="images/000000000486_segmented.png" alt="segmented" width="160" /></td>
+              <td>Severe under-detection</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.7569</td>
+              <td>7</td>
+              <td>1</td>
+              <td>no</td>
+              <td>8</td>
+              <td>2</td>
+              <td>7 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 1 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000074.jpg</div><img src="images/000000000074_segmented.png" alt="segmented" width="160" /></td>
+              <td>Severe under-detection</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.7753</td>
+              <td>6</td>
+              <td>4</td>
+              <td>no</td>
+              <td>8</td>
+              <td>6</td>
+              <td>6 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 4 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000109.jpg</div><img src="images/000000000109_segmented.png" alt="segmented" width="160" /></td>
+              <td>Severe under-detection</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.5718</td>
+              <td>6</td>
+              <td>5</td>
+              <td>no</td>
+              <td>8</td>
+              <td>7</td>
+              <td>6 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 5 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000009.jpg</div><img src="images/000000000009_segmented.png" alt="segmented" width="160" /></td>
+              <td>Severe under-detection</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.8847</td>
+              <td>5</td>
+              <td>3</td>
+              <td>no</td>
+              <td>8</td>
+              <td>7</td>
+              <td>5 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000201.jpg</div><img src="images/000000000201_segmented.png" alt="segmented" width="160" /></td>
+              <td>Severe under-detection</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.8112</td>
+              <td>5</td>
+              <td>7</td>
+              <td>no</td>
+              <td>8</td>
+              <td>10</td>
+              <td>5 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 7 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000397.jpg</div><img src="images/000000000397_segmented.png" alt="segmented" width="160" /></td>
+              <td>Severe under-detection</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.6966</td>
+              <td>5</td>
+              <td>1</td>
+              <td>no</td>
+              <td>7</td>
+              <td>3</td>
+              <td>5 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 1 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000419.jpg</div><img src="images/000000000419_segmented.png" alt="segmented" width="160" /></td>
+              <td>Severe under-detection</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.6750</td>
+              <td>5</td>
+              <td>1</td>
+              <td>no</td>
+              <td>7</td>
+              <td>3</td>
+              <td>5 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 1 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000049.jpg</div><img src="images/000000000049_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>9</td>
+              <td>9</td>
+              <td>no</td>
+              <td>9</td>
+              <td>9</td>
+              <td>9 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 9 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000077.jpg</div><img src="images/000000000077_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>8</td>
+              <td>4</td>
+              <td>no</td>
+              <td>8</td>
+              <td>4</td>
+              <td>8 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 4 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000260.jpg</div><img src="images/000000000260_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>7</td>
+              <td>7</td>
+              <td>no</td>
+              <td>7</td>
+              <td>7</td>
+              <td>7 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 7 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000061.jpg</div><img src="images/000000000061_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>5</td>
+              <td>3</td>
+              <td>no</td>
+              <td>5</td>
+              <td>3</td>
+              <td>5 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000560.jpg</div><img src="images/000000000560_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>5</td>
+              <td>3</td>
+              <td>no</td>
+              <td>5</td>
+              <td>3</td>
+              <td>5 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000136.jpg</div><img src="images/000000000136_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>4</td>
+              <td>4</td>
+              <td>no</td>
+              <td>4</td>
+              <td>4</td>
+              <td>4 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 4 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000208.jpg</div><img src="images/000000000208_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>4</td>
+              <td>2</td>
+              <td>no</td>
+              <td>4</td>
+              <td>2</td>
+              <td>4 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000309.jpg</div><img src="images/000000000309_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>4</td>
+              <td>3</td>
+              <td>no</td>
+              <td>4</td>
+              <td>3</td>
+              <td>4 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000359.jpg</div><img src="images/000000000359_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>4</td>
+              <td>2</td>
+              <td>no</td>
+              <td>4</td>
+              <td>2</td>
+              <td>4 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000491.jpg</div><img src="images/000000000491_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>4</td>
+              <td>2</td>
+              <td>no</td>
+              <td>4</td>
+              <td>2</td>
+              <td>4 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000623.jpg</div><img src="images/000000000623_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>4</td>
+              <td>2</td>
+              <td>no</td>
+              <td>4</td>
+              <td>2</td>
+              <td>4 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000360.jpg</div><img src="images/000000000360_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>3</td>
+              <td>3</td>
+              <td>no</td>
+              <td>3</td>
+              <td>3</td>
+              <td>3 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000133.jpg</div><img src="images/000000000133_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>2</td>
+              <td>1</td>
+              <td>no</td>
+              <td>2</td>
+              <td>1</td>
+              <td>2 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 1 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000474.jpg</div><img src="images/000000000474_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>2</td>
+              <td>2</td>
+              <td>no</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000490.jpg</div><img src="images/000000000490_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>2</td>
+              <td>2</td>
+              <td>no</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000590.jpg</div><img src="images/000000000590_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>2</td>
+              <td>3</td>
+              <td>no</td>
+              <td>2</td>
+              <td>3</td>
+              <td>2 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000042.jpg</div><img src="images/000000000042_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>1</td>
+              <td>3</td>
+              <td>no</td>
+              <td>1</td>
+              <td>3</td>
+              <td>1 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000472.jpg</div><img src="images/000000000472_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>1</td>
+              <td>1</td>
+              <td>no</td>
+              <td>1</td>
+              <td>1</td>
+              <td>1 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 1 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>000000000581.jpg</div><img src="images/000000000581_segmented.png" alt="segmented" width="160" /></td>
+              <td>Detections present but masks do not match</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#d35400">false_negative</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>1</td>
+              <td>3</td>
+              <td>no</td>
+              <td>1</td>
+              <td>3</td>
+              <td>1 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+            <tr class="high" style="background:#fff4e5">
+              <td><div>sample.jpg</div><img src="images/sample_segmented.png" alt="segmented" width="160" /></td>
+              <td>Cannot evaluate (no ground truth)</td>
+              <td><strong>high</strong></td>
+              <td><span class="badge" style="background:#8e44ad">no_groundtruth</span><span class="badge" style="background:#e67e22">low_iou</span><span class="badge" style="background:#2980b9">classification_error</span><span class="badge" style="background:#16a085">false_positive</span></td>
+              <td>0.0000</td>
+              <td>0</td>
+              <td>9</td>
+              <td>no</td>
+              <td>0</td>
+              <td>9</td>
+              <td>No ground-truth label file for this image; metrics are not fully comparable. Zero average IoU on matched instances — masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 9 extra predicted instance(s) not matched to ground truth.</td>
+            </tr>
+            
+      </tbody>
+    </table>
+  </section>
+</body>
+</html>

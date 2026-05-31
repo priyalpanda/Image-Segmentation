@@ -1,0 +1,2659 @@
+{
+  "source": "issue_eval/images only (original photos)",
+  "image_count": 60,
+  "all_images_grouped": true,
+  "unsupervised_workflow": {
+    "step1_feature_extraction": {
+      "technique": "CLIP vision encoder (L2-normalized image embeddings)",
+      "summary": "Each row is one CLIP image embedding (L2-normalized). Captures semantic visual similarity (scene type, objects, layout) without using your segmentation labels.",
+      "backbone": "CLIP ViT-B-32 (openai)",
+      "embedding_dim": 512
+    },
+    "step2_kmeans": {
+      "technique": "K-Means clustering",
+      "summary": "Images in the same cluster have similar embedding vectors (mathematically close in high-dimensional space).",
+      "chosen_k": 5,
+      "silhouette_score": 0.024,
+      "k_selection_note": "Auto-selected k=5 for clearer groups (best silhouette was only 0.043 at k=3).",
+      "k_search_scores": [
+        {
+          "k": 2,
+          "silhouette": 0.0386
+        },
+        {
+          "k": 3,
+          "silhouette": 0.0425
+        },
+        {
+          "k": 4,
+          "silhouette": 0.0256
+        },
+        {
+          "k": 5,
+          "silhouette": 0.024
+        },
+        {
+          "k": 6,
+          "silhouette": 0.0291
+        },
+        {
+          "k": 7,
+          "silhouette": 0.0106
+        },
+        {
+          "k": 8,
+          "silhouette": 0.0256
+        }
+      ]
+    },
+    "step3_visualization": {
+      "technique": "t-SNE and UMAP (2D)",
+      "summary": "Reduce high-dimensional embeddings to a scatter plot so you can see which photos sit near each other.",
+      "tsne": {
+        "method": "t-SNE",
+        "description": "2D map: points close together = visually similar photos (for human review)."
+      },
+      "umap": {
+        "method": "UMAP",
+        "description": "Alternative 2D layout; often preserves global structure better than t-SNE."
+      }
+    }
+  },
+  "embedding": {
+    "backbone": "CLIP ViT-B-32 (openai)",
+    "encoder_type": "clip",
+    "embedding_dim": 512,
+    "num_images": 60,
+    "normalized": true,
+    "description": "Each row is one CLIP image embedding (L2-normalized). Captures semantic visual similarity (scene type, objects, layout) without using your segmentation labels."
+  },
+  "clustering": {
+    "algorithm": "K-Means on standardized CNN embeddings",
+    "chosen_k": 5,
+    "k_selection_note": "Auto-selected k=5 for clearer groups (best silhouette was only 0.043 at k=3).",
+    "k_search_scores": [
+      {
+        "k": 2,
+        "silhouette": 0.0386
+      },
+      {
+        "k": 3,
+        "silhouette": 0.0425
+      },
+      {
+        "k": 4,
+        "silhouette": 0.0256
+      },
+      {
+        "k": 5,
+        "silhouette": 0.024
+      },
+      {
+        "k": 6,
+        "silhouette": 0.0291
+      },
+      {
+        "k": 7,
+        "silhouette": 0.0106
+      },
+      {
+        "k": 8,
+        "silhouette": 0.0256
+      }
+    ],
+    "silhouette_score": 0.024
+  },
+  "umap_available": true,
+  "class_analysis": {
+    "coco_dataset": "MS COCO (80 classes, YOLOv8-seg / YOLO11-seg)",
+    "total_gt_instances": 674,
+    "total_pred_instances": 389,
+    "top_classes_in_issue_images": [
+      {
+        "class_id": 0,
+        "coco_name": "person",
+        "instance_count": 193,
+        "share_of_gt": 0.2864
+      },
+      {
+        "class_id": 2,
+        "coco_name": "car",
+        "instance_count": 42,
+        "share_of_gt": 0.0623
+      },
+      {
+        "class_id": 56,
+        "coco_name": "chair",
+        "instance_count": 33,
+        "share_of_gt": 0.049
+      },
+      {
+        "class_id": 41,
+        "coco_name": "cup",
+        "instance_count": 29,
+        "share_of_gt": 0.043
+      },
+      {
+        "class_id": 45,
+        "coco_name": "bowl",
+        "instance_count": 26,
+        "share_of_gt": 0.0386
+      },
+      {
+        "class_id": 73,
+        "coco_name": "book",
+        "instance_count": 26,
+        "share_of_gt": 0.0386
+      },
+      {
+        "class_id": 51,
+        "coco_name": "carrot",
+        "instance_count": 22,
+        "share_of_gt": 0.0326
+      },
+      {
+        "class_id": 44,
+        "coco_name": "spoon",
+        "instance_count": 21,
+        "share_of_gt": 0.0312
+      },
+      {
+        "class_id": 77,
+        "coco_name": "teddy bear",
+        "instance_count": 21,
+        "share_of_gt": 0.0312
+      },
+      {
+        "class_id": 25,
+        "coco_name": "umbrella",
+        "instance_count": 17,
+        "share_of_gt": 0.0252
+      },
+      {
+        "class_id": 39,
+        "coco_name": "bottle",
+        "instance_count": 16,
+        "share_of_gt": 0.0237
+      },
+      {
+        "class_id": 26,
+        "coco_name": "handbag",
+        "instance_count": 15,
+        "share_of_gt": 0.0223
+      },
+      {
+        "class_id": 40,
+        "coco_name": "wine glass",
+        "instance_count": 13,
+        "share_of_gt": 0.0193
+      },
+      {
+        "class_id": 9,
+        "coco_name": "traffic light",
+        "instance_count": 13,
+        "share_of_gt": 0.0193
+      },
+      {
+        "class_id": 50,
+        "coco_name": "broccoli",
+        "instance_count": 10,
+        "share_of_gt": 0.0148
+      },
+      {
+        "class_id": 7,
+        "coco_name": "truck",
+        "instance_count": 10,
+        "share_of_gt": 0.0148
+      },
+      {
+        "class_id": 43,
+        "coco_name": "knife",
+        "instance_count": 10,
+        "share_of_gt": 0.0148
+      },
+      {
+        "class_id": 60,
+        "coco_name": "dining table",
+        "instance_count": 9,
+        "share_of_gt": 0.0134
+      },
+      {
+        "class_id": 58,
+        "coco_name": "potted plant",
+        "instance_count": 8,
+        "share_of_gt": 0.0119
+      },
+      {
+        "class_id": 13,
+        "coco_name": "bench",
+        "instance_count": 8,
+        "share_of_gt": 0.0119
+      }
+    ],
+    "top_predicted_classes": [
+      {
+        "class_id": 0,
+        "coco_name": "person",
+        "instance_count": 150,
+        "share_of_gt": 0.2226
+      },
+      {
+        "class_id": 56,
+        "coco_name": "chair",
+        "instance_count": 39,
+        "share_of_gt": 0.0579
+      },
+      {
+        "class_id": 45,
+        "coco_name": "bowl",
+        "instance_count": 16,
+        "share_of_gt": 0.0237
+      },
+      {
+        "class_id": 25,
+        "coco_name": "umbrella",
+        "instance_count": 11,
+        "share_of_gt": 0.0163
+      },
+      {
+        "class_id": 2,
+        "coco_name": "car",
+        "instance_count": 9,
+        "share_of_gt": 0.0134
+      },
+      {
+        "class_id": 40,
+        "coco_name": "wine glass",
+        "instance_count": 8,
+        "share_of_gt": 0.0119
+      },
+      {
+        "class_id": 31,
+        "coco_name": "snowboard",
+        "instance_count": 8,
+        "share_of_gt": 0.0119
+      },
+      {
+        "class_id": 77,
+        "coco_name": "teddy bear",
+        "instance_count": 7,
+        "share_of_gt": 0.0104
+      },
+      {
+        "class_id": 16,
+        "coco_name": "dog",
+        "instance_count": 7,
+        "share_of_gt": 0.0104
+      },
+      {
+        "class_id": 41,
+        "coco_name": "cup",
+        "instance_count": 7,
+        "share_of_gt": 0.0104
+      },
+      {
+        "class_id": 44,
+        "coco_name": "spoon",
+        "instance_count": 7,
+        "share_of_gt": 0.0104
+      },
+      {
+        "class_id": 14,
+        "coco_name": "bird",
+        "instance_count": 7,
+        "share_of_gt": 0.0104
+      },
+      {
+        "class_id": 60,
+        "coco_name": "dining table",
+        "instance_count": 6,
+        "share_of_gt": 0.0089
+      },
+      {
+        "class_id": 4,
+        "coco_name": "airplane",
+        "instance_count": 6,
+        "share_of_gt": 0.0089
+      },
+      {
+        "class_id": 51,
+        "coco_name": "carrot",
+        "instance_count": 5,
+        "share_of_gt": 0.0074
+      },
+      {
+        "class_id": 5,
+        "coco_name": "bus",
+        "instance_count": 5,
+        "share_of_gt": 0.0074
+      },
+      {
+        "class_id": 17,
+        "coco_name": "horse",
+        "instance_count": 4,
+        "share_of_gt": 0.0059
+      },
+      {
+        "class_id": 53,
+        "coco_name": "pizza",
+        "instance_count": 4,
+        "share_of_gt": 0.0059
+      },
+      {
+        "class_id": 23,
+        "coco_name": "giraffe",
+        "instance_count": 4,
+        "share_of_gt": 0.0059
+      },
+      {
+        "class_id": 33,
+        "coco_name": "kite",
+        "instance_count": 4,
+        "share_of_gt": 0.0059
+      }
+    ],
+    "classes_never_detected": [
+      {
+        "class_id": 42,
+        "coco_name": "fork",
+        "gt_instances": 4,
+        "images_where_missed": 4
+      },
+      {
+        "class_id": 49,
+        "coco_name": "orange",
+        "gt_instances": 4,
+        "images_where_missed": 1
+      },
+      {
+        "class_id": 64,
+        "coco_name": "mouse",
+        "gt_instances": 2,
+        "images_where_missed": 2
+      },
+      {
+        "class_id": 20,
+        "coco_name": "elephant",
+        "gt_instances": 2,
+        "images_where_missed": 1
+      },
+      {
+        "class_id": 79,
+        "coco_name": "toothbrush",
+        "gt_instances": 2,
+        "images_where_missed": 1
+      },
+      {
+        "class_id": 61,
+        "coco_name": "toilet",
+        "gt_instances": 1,
+        "images_where_missed": 1
+      },
+      {
+        "class_id": 63,
+        "coco_name": "laptop",
+        "gt_instances": 1,
+        "images_where_missed": 1
+      }
+    ],
+    "classes_most_often_completely_missed": [
+      {
+        "coco_name": "handbag",
+        "images_affected": 5,
+        "gt_instances": 15
+      },
+      {
+        "coco_name": "car",
+        "images_affected": 4,
+        "gt_instances": 42
+      },
+      {
+        "coco_name": "book",
+        "images_affected": 4,
+        "gt_instances": 26
+      },
+      {
+        "coco_name": "fork",
+        "images_affected": 4,
+        "gt_instances": 4
+      },
+      {
+        "coco_name": "chair",
+        "images_affected": 3,
+        "gt_instances": 33
+      },
+      {
+        "coco_name": "teddy bear",
+        "images_affected": 3,
+        "gt_instances": 21
+      },
+      {
+        "coco_name": "knife",
+        "images_affected": 3,
+        "gt_instances": 10
+      },
+      {
+        "coco_name": "potted plant",
+        "images_affected": 3,
+        "gt_instances": 8
+      },
+      {
+        "coco_name": "cell phone",
+        "images_affected": 3,
+        "gt_instances": 7
+      },
+      {
+        "coco_name": "sports ball",
+        "images_affected": 3,
+        "gt_instances": 3
+      },
+      {
+        "coco_name": "person",
+        "images_affected": 2,
+        "gt_instances": 193
+      },
+      {
+        "coco_name": "cup",
+        "images_affected": 2,
+        "gt_instances": 29
+      },
+      {
+        "coco_name": "bowl",
+        "images_affected": 2,
+        "gt_instances": 26
+      },
+      {
+        "coco_name": "truck",
+        "images_affected": 2,
+        "gt_instances": 10
+      },
+      {
+        "coco_name": "dining table",
+        "images_affected": 2,
+        "gt_instances": 9
+      },
+      {
+        "coco_name": "bench",
+        "images_affected": 2,
+        "gt_instances": 8
+      },
+      {
+        "coco_name": "dog",
+        "images_affected": 2,
+        "gt_instances": 6
+      },
+      {
+        "coco_name": "bicycle",
+        "images_affected": 2,
+        "gt_instances": 6
+      },
+      {
+        "coco_name": "backpack",
+        "images_affected": 2,
+        "gt_instances": 5
+      },
+      {
+        "coco_name": "remote",
+        "images_affected": 2,
+        "gt_instances": 5
+      }
+    ]
+  },
+  "visual_groups": [
+    {
+      "group_id": 0,
+      "layman_title": "People-focused scenes (person, teddy bear, snowboard)",
+      "layman_why": "People appear often here. Crowds, partial bodies, and overlap make it hard to draw a clean outline around each person.",
+      "image_count": 15,
+      "images": [
+        "000000000042.jpg",
+        "000000000061.jpg",
+        "000000000074.jpg",
+        "000000000127.jpg",
+        "000000000201.jpg",
+        "000000000208.jpg",
+        "000000000250.jpg",
+        "000000000309.jpg",
+        "000000000328.jpg",
+        "000000000359.jpg",
+        "000000000474.jpg",
+        "000000000490.jpg",
+        "000000000491.jpg",
+        "000000000508.jpg",
+        "000000000581.jpg"
+      ],
+      "avg_objects_per_image": 4.73,
+      "common_coco_classes": [
+        {
+          "class_id": 0,
+          "coco_name": "person",
+          "instance_count": 16
+        },
+        {
+          "class_id": 77,
+          "coco_name": "teddy bear",
+          "instance_count": 7
+        },
+        {
+          "class_id": 31,
+          "coco_name": "snowboard",
+          "instance_count": 6
+        },
+        {
+          "class_id": 16,
+          "coco_name": "dog",
+          "instance_count": 5
+        },
+        {
+          "class_id": 13,
+          "coco_name": "bench",
+          "instance_count": 5
+        },
+        {
+          "class_id": 25,
+          "coco_name": "umbrella",
+          "instance_count": 3
+        },
+        {
+          "class_id": 9,
+          "coco_name": "traffic light",
+          "instance_count": 3
+        },
+        {
+          "class_id": 20,
+          "coco_name": "elephant",
+          "instance_count": 2
+        }
+      ],
+      "members": [
+        {
+          "image": "000000000042.jpg",
+          "stem": "000000000042",
+          "kmeans_cluster": 0,
+          "tsne_x": -1.6495,
+          "tsne_y": 0.5749,
+          "gt_instance_count": 1,
+          "pred_instance_count": 3,
+          "missed_coco_classes": [
+            "dog"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. dog). Labeled 1 objects vs 3 detected.",
+          "umap_x": 8.4798,
+          "umap_y": 2.8165
+        },
+        {
+          "image": "000000000061.jpg",
+          "stem": "000000000061",
+          "kmeans_cluster": 0,
+          "tsne_x": -2.0603,
+          "tsne_y": 1.9365,
+          "gt_instance_count": 5,
+          "pred_instance_count": 3,
+          "missed_coco_classes": [
+            "elephant"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. elephant). Labeled 5 objects vs 3 detected.",
+          "umap_x": 8.3952,
+          "umap_y": 3.7339
+        },
+        {
+          "image": "000000000074.jpg",
+          "stem": "000000000074",
+          "kmeans_cluster": 0,
+          "tsne_x": -0.5953,
+          "tsne_y": 3.3425,
+          "gt_instance_count": 8,
+          "pred_instance_count": 6,
+          "missed_coco_classes": [],
+          "layman_issue": "Some objects were found (6 of 8), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+          "umap_x": 8.2175,
+          "umap_y": 3.336
+        },
+        {
+          "image": "000000000127.jpg",
+          "stem": "000000000127",
+          "kmeans_cluster": 0,
+          "tsne_x": 3.9231,
+          "tsne_y": -2.1822,
+          "gt_instance_count": 17,
+          "pred_instance_count": 10,
+          "missed_coco_classes": [
+            "person",
+            "umbrella",
+            "handbag",
+            "potted plant",
+            "book"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. person, umbrella, handbag, potted plant\u2026). Labeled 17 objects vs 10 detected.",
+          "umap_x": 9.4629,
+          "umap_y": 4.258
+        },
+        {
+          "image": "000000000201.jpg",
+          "stem": "000000000201",
+          "kmeans_cluster": 0,
+          "tsne_x": 3.7871,
+          "tsne_y": 2.7505,
+          "gt_instance_count": 8,
+          "pred_instance_count": 10,
+          "missed_coco_classes": [],
+          "layman_issue": "Some objects were found (10 of 8), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+          "umap_x": 8.3703,
+          "umap_y": 4.5177
+        },
+        {
+          "image": "000000000208.jpg",
+          "stem": "000000000208",
+          "kmeans_cluster": 0,
+          "tsne_x": 3.8833,
+          "tsne_y": -0.1058,
+          "gt_instance_count": 4,
+          "pred_instance_count": 2,
+          "missed_coco_classes": [
+            "toothbrush"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. toothbrush). Labeled 4 objects vs 2 detected.",
+          "umap_x": 8.9245,
+          "umap_y": 3.2813
+        },
+        {
+          "image": "000000000250.jpg",
+          "stem": "000000000250",
+          "kmeans_cluster": 0,
+          "tsne_x": 1.514,
+          "tsne_y": 4.4012,
+          "gt_instance_count": 0,
+          "pred_instance_count": 0,
+          "missed_coco_classes": [],
+          "layman_issue": "No labeled objects to compare \u2014 the model did not produce usable masks for scoring.",
+          "umap_x": 7.8382,
+          "umap_y": 4.9333
+        },
+        {
+          "image": "000000000309.jpg",
+          "stem": "000000000309",
+          "kmeans_cluster": 0,
+          "tsne_x": -1.987,
+          "tsne_y": 1.4796,
+          "gt_instance_count": 4,
+          "pred_instance_count": 3,
+          "missed_coco_classes": [
+            "teddy bear"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. teddy bear). Labeled 4 objects vs 3 detected.",
+          "umap_x": 7.9383,
+          "umap_y": 3.0424
+        },
+        {
+          "image": "000000000328.jpg",
+          "stem": "000000000328",
+          "kmeans_cluster": 0,
+          "tsne_x": -3.1274,
+          "tsne_y": -0.4732,
+          "gt_instance_count": 11,
+          "pred_instance_count": 3,
+          "missed_coco_classes": [
+            "car",
+            "bench",
+            "backpack",
+            "tie",
+            "cell phone",
+            "book"
+          ],
+          "layman_issue": "The scene is crowded (11 objects labeled). The model only found about 3, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 7.8916,
+          "umap_y": 3.9501
+        },
+        {
+          "image": "000000000359.jpg",
+          "stem": "000000000359",
+          "kmeans_cluster": 0,
+          "tsne_x": 0.7102,
+          "tsne_y": 4.2709,
+          "gt_instance_count": 4,
+          "pred_instance_count": 2,
+          "missed_coco_classes": [],
+          "layman_issue": "Some objects were found (2 of 4), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+          "umap_x": 7.6215,
+          "umap_y": 4.5467
+        },
+        {
+          "image": "000000000474.jpg",
+          "stem": "000000000474",
+          "kmeans_cluster": 0,
+          "tsne_x": -3.6318,
+          "tsne_y": 1.5198,
+          "gt_instance_count": 2,
+          "pred_instance_count": 2,
+          "missed_coco_classes": [],
+          "layman_issue": "Some objects were found (2 of 2), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+          "umap_x": 7.8194,
+          "umap_y": 2.6561
+        },
+        {
+          "image": "000000000490.jpg",
+          "stem": "000000000490",
+          "kmeans_cluster": 0,
+          "tsne_x": -0.1379,
+          "tsne_y": 2.4556,
+          "gt_instance_count": 2,
+          "pred_instance_count": 2,
+          "missed_coco_classes": [],
+          "layman_issue": "Some objects were found (2 of 2), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+          "umap_x": 7.9734,
+          "umap_y": 3.5975
+        },
+        {
+          "image": "000000000491.jpg",
+          "stem": "000000000491",
+          "kmeans_cluster": 0,
+          "tsne_x": -2.2717,
+          "tsne_y": -2.4324,
+          "gt_instance_count": 4,
+          "pred_instance_count": 2,
+          "missed_coco_classes": [
+            "teddy bear"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. teddy bear). Labeled 4 objects vs 2 detected.",
+          "umap_x": 8.8625,
+          "umap_y": 2.1353
+        },
+        {
+          "image": "000000000508.jpg",
+          "stem": "000000000508",
+          "kmeans_cluster": 0,
+          "tsne_x": 4.2078,
+          "tsne_y": 2.7569,
+          "gt_instance_count": 0,
+          "pred_instance_count": 0,
+          "missed_coco_classes": [],
+          "layman_issue": "No labeled objects to compare \u2014 the model did not produce usable masks for scoring.",
+          "umap_x": 8.688,
+          "umap_y": 4.4581
+        },
+        {
+          "image": "000000000581.jpg",
+          "stem": "000000000581",
+          "kmeans_cluster": 0,
+          "tsne_x": -0.1021,
+          "tsne_y": 1.4178,
+          "gt_instance_count": 1,
+          "pred_instance_count": 3,
+          "missed_coco_classes": [],
+          "layman_issue": "Some objects were found (3 of 1), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+          "umap_x": 8.6906,
+          "umap_y": 3.1399
+        }
+      ]
+    },
+    {
+      "group_id": 1,
+      "layman_title": "Busy scenes \u2014 lots of objects (person, umbrella, traffic light)",
+      "layman_why": "These photos have many things in one frame. The model tends to catch the big, obvious objects and miss smaller or overlapping ones \u2014 like a busy street or a table full of items.",
+      "image_count": 11,
+      "images": [
+        "000000000049.jpg",
+        "000000000077.jpg",
+        "000000000109.jpg",
+        "000000000149.jpg",
+        "000000000257.jpg",
+        "000000000315.jpg",
+        "000000000360.jpg",
+        "000000000419.jpg",
+        "000000000472.jpg",
+        "000000000520.jpg",
+        "000000000531.jpg"
+      ],
+      "avg_objects_per_image": 14.09,
+      "common_coco_classes": [
+        {
+          "class_id": 0,
+          "coco_name": "person",
+          "instance_count": 69
+        },
+        {
+          "class_id": 25,
+          "coco_name": "umbrella",
+          "instance_count": 13
+        },
+        {
+          "class_id": 9,
+          "coco_name": "traffic light",
+          "instance_count": 9
+        },
+        {
+          "class_id": 56,
+          "coco_name": "chair",
+          "instance_count": 9
+        },
+        {
+          "class_id": 14,
+          "coco_name": "bird",
+          "instance_count": 8
+        },
+        {
+          "class_id": 2,
+          "coco_name": "car",
+          "instance_count": 7
+        },
+        {
+          "class_id": 26,
+          "coco_name": "handbag",
+          "instance_count": 7
+        },
+        {
+          "class_id": 33,
+          "coco_name": "kite",
+          "instance_count": 6
+        }
+      ],
+      "members": [
+        {
+          "image": "000000000049.jpg",
+          "stem": "000000000049",
+          "kmeans_cluster": 1,
+          "tsne_x": -2.7631,
+          "tsne_y": 3.2204,
+          "gt_instance_count": 9,
+          "pred_instance_count": 9,
+          "missed_coco_classes": [
+            "potted plant"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. potted plant). Labeled 9 objects vs 9 detected.",
+          "umap_x": 7.4101,
+          "umap_y": 3.6433
+        },
+        {
+          "image": "000000000077.jpg",
+          "stem": "000000000077",
+          "kmeans_cluster": 1,
+          "tsne_x": 1.6853,
+          "tsne_y": 2.661,
+          "gt_instance_count": 8,
+          "pred_instance_count": 4,
+          "missed_coco_classes": [
+            "skateboard"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. skateboard). Labeled 8 objects vs 4 detected.",
+          "umap_x": 7.7255,
+          "umap_y": 4.0872
+        },
+        {
+          "image": "000000000109.jpg",
+          "stem": "000000000109",
+          "kmeans_cluster": 1,
+          "tsne_x": -3.4001,
+          "tsne_y": 5.4259,
+          "gt_instance_count": 8,
+          "pred_instance_count": 7,
+          "missed_coco_classes": [
+            "dog"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. dog). Labeled 8 objects vs 7 detected.",
+          "umap_x": 6.6536,
+          "umap_y": 3.8445
+        },
+        {
+          "image": "000000000149.jpg",
+          "stem": "000000000149",
+          "kmeans_cluster": 1,
+          "tsne_x": -2.7548,
+          "tsne_y": 4.1778,
+          "gt_instance_count": 22,
+          "pred_instance_count": 6,
+          "missed_coco_classes": [
+            "car"
+          ],
+          "layman_issue": "The scene is crowded (22 objects labeled). The model only found about 6, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 6.9914,
+          "umap_y": 3.5474
+        },
+        {
+          "image": "000000000257.jpg",
+          "stem": "000000000257",
+          "kmeans_cluster": 1,
+          "tsne_x": 2.142,
+          "tsne_y": 6.0049,
+          "gt_instance_count": 33,
+          "pred_instance_count": 22,
+          "missed_coco_classes": [
+            "handbag"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. handbag). Labeled 33 objects vs 22 detected.",
+          "umap_x": 7.5747,
+          "umap_y": 4.8676
+        },
+        {
+          "image": "000000000315.jpg",
+          "stem": "000000000315",
+          "kmeans_cluster": 1,
+          "tsne_x": -3.9124,
+          "tsne_y": 6.8396,
+          "gt_instance_count": 38,
+          "pred_instance_count": 13,
+          "missed_coco_classes": [
+            "handbag",
+            "chair"
+          ],
+          "layman_issue": "The scene is crowded (38 objects labeled). The model only found about 13, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 7.1298,
+          "umap_y": 4.6719
+        },
+        {
+          "image": "000000000360.jpg",
+          "stem": "000000000360",
+          "kmeans_cluster": 1,
+          "tsne_x": 2.7939,
+          "tsne_y": 2.7675,
+          "gt_instance_count": 3,
+          "pred_instance_count": 3,
+          "missed_coco_classes": [
+            "snowboard"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. snowboard). Labeled 3 objects vs 3 detected.",
+          "umap_x": 8.1931,
+          "umap_y": 4.2923
+        },
+        {
+          "image": "000000000419.jpg",
+          "stem": "000000000419",
+          "kmeans_cluster": 1,
+          "tsne_x": -5.9798,
+          "tsne_y": 2.8356,
+          "gt_instance_count": 7,
+          "pred_instance_count": 3,
+          "missed_coco_classes": [
+            "car",
+            "sports ball"
+          ],
+          "layman_issue": "The scene is crowded (7 objects labeled). The model only found about 3, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 7.3165,
+          "umap_y": 2.3161
+        },
+        {
+          "image": "000000000472.jpg",
+          "stem": "000000000472",
+          "kmeans_cluster": 1,
+          "tsne_x": -1.967,
+          "tsne_y": 6.2288,
+          "gt_instance_count": 1,
+          "pred_instance_count": 1,
+          "missed_coco_classes": [],
+          "layman_issue": "Some objects were found (1 of 1), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+          "umap_x": 6.2947,
+          "umap_y": 4.3392
+        },
+        {
+          "image": "000000000520.jpg",
+          "stem": "000000000520",
+          "kmeans_cluster": 1,
+          "tsne_x": -2.5545,
+          "tsne_y": 5.0411,
+          "gt_instance_count": 11,
+          "pred_instance_count": 6,
+          "missed_coco_classes": [
+            "person"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. person). Labeled 11 objects vs 6 detected.",
+          "umap_x": 6.8611,
+          "umap_y": 4.197
+        },
+        {
+          "image": "000000000531.jpg",
+          "stem": "000000000531",
+          "kmeans_cluster": 1,
+          "tsne_x": -5.9232,
+          "tsne_y": 3.1195,
+          "gt_instance_count": 15,
+          "pred_instance_count": 10,
+          "missed_coco_classes": [
+            "bicycle",
+            "sports ball"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. bicycle, sports ball). Labeled 15 objects vs 10 detected.",
+          "umap_x": 6.9982,
+          "umap_y": 2.4839
+        }
+      ]
+    },
+    {
+      "group_id": 2,
+      "layman_title": "Busy scenes \u2014 lots of objects (car, person, airplane)",
+      "layman_why": "These photos have many things in one frame. The model tends to catch the big, obvious objects and miss smaller or overlapping ones \u2014 like a busy street or a table full of items.",
+      "image_count": 3,
+      "images": [
+        "000000000247.jpg",
+        "000000000540.jpg",
+        "000000000542.jpg"
+      ],
+      "avg_objects_per_image": 15.0,
+      "common_coco_classes": [
+        {
+          "class_id": 2,
+          "coco_name": "car",
+          "instance_count": 19
+        },
+        {
+          "class_id": 0,
+          "coco_name": "person",
+          "instance_count": 12
+        },
+        {
+          "class_id": 4,
+          "coco_name": "airplane",
+          "instance_count": 4
+        },
+        {
+          "class_id": 7,
+          "coco_name": "truck",
+          "instance_count": 3
+        },
+        {
+          "class_id": 26,
+          "coco_name": "handbag",
+          "instance_count": 3
+        },
+        {
+          "class_id": 5,
+          "coco_name": "bus",
+          "instance_count": 2
+        },
+        {
+          "class_id": 9,
+          "coco_name": "traffic light",
+          "instance_count": 1
+        },
+        {
+          "class_id": 27,
+          "coco_name": "tie",
+          "instance_count": 1
+        }
+      ],
+      "members": [
+        {
+          "image": "000000000247.jpg",
+          "stem": "000000000247",
+          "kmeans_cluster": 2,
+          "tsne_x": -0.0992,
+          "tsne_y": 9.1325,
+          "gt_instance_count": 8,
+          "pred_instance_count": 3,
+          "missed_coco_classes": [],
+          "layman_issue": "The scene is crowded (8 objects labeled). The model only found about 3, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 6.2289,
+          "umap_y": 4.9372
+        },
+        {
+          "image": "000000000540.jpg",
+          "stem": "000000000540",
+          "kmeans_cluster": 2,
+          "tsne_x": -1.3914,
+          "tsne_y": 7.9204,
+          "gt_instance_count": 20,
+          "pred_instance_count": 1,
+          "missed_coco_classes": [
+            "car",
+            "bus",
+            "truck",
+            "traffic light"
+          ],
+          "layman_issue": "The scene is crowded (20 objects labeled). The model only found about 1, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 6.5432,
+          "umap_y": 4.877
+        },
+        {
+          "image": "000000000542.jpg",
+          "stem": "000000000542",
+          "kmeans_cluster": 2,
+          "tsne_x": 0.0338,
+          "tsne_y": 9.3857,
+          "gt_instance_count": 17,
+          "pred_instance_count": 12,
+          "missed_coco_classes": [
+            "handbag",
+            "tie"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. handbag, tie). Labeled 17 objects vs 12 detected.",
+          "umap_x": 6.033,
+          "umap_y": 4.65
+        }
+      ]
+    },
+    {
+      "group_id": 3,
+      "layman_title": "Moderately crowded scenes (person, book, cup)",
+      "layman_why": "In this group the model regularly skips whole types of objects. Training needs more examples of these scenes and those missing categories.",
+      "image_count": 24,
+      "images": [
+        "000000000071.jpg",
+        "000000000113.jpg",
+        "000000000133.jpg",
+        "000000000136.jpg",
+        "000000000164.jpg",
+        "000000000241.jpg",
+        "000000000260.jpg",
+        "000000000308.jpg",
+        "000000000357.jpg",
+        "000000000384.jpg",
+        "000000000389.jpg",
+        "000000000395.jpg",
+        "000000000446.jpg",
+        "000000000514.jpg",
+        "000000000536.jpg",
+        "000000000544.jpg",
+        "000000000560.jpg",
+        "000000000564.jpg",
+        "000000000590.jpg",
+        "000000000612.jpg",
+        "000000000623.jpg",
+        "000000000641.jpg",
+        "000000000643.jpg",
+        "sample.jpg"
+      ],
+      "avg_objects_per_image": 11.67,
+      "common_coco_classes": [
+        {
+          "class_id": 0,
+          "coco_name": "person",
+          "instance_count": 84
+        },
+        {
+          "class_id": 73,
+          "coco_name": "book",
+          "instance_count": 24
+        },
+        {
+          "class_id": 41,
+          "coco_name": "cup",
+          "instance_count": 22
+        },
+        {
+          "class_id": 56,
+          "coco_name": "chair",
+          "instance_count": 19
+        },
+        {
+          "class_id": 2,
+          "coco_name": "car",
+          "instance_count": 14
+        },
+        {
+          "class_id": 77,
+          "coco_name": "teddy bear",
+          "instance_count": 14
+        },
+        {
+          "class_id": 39,
+          "coco_name": "bottle",
+          "instance_count": 13
+        },
+        {
+          "class_id": 40,
+          "coco_name": "wine glass",
+          "instance_count": 13
+        }
+      ],
+      "members": [
+        {
+          "image": "000000000071.jpg",
+          "stem": "000000000071",
+          "kmeans_cluster": 3,
+          "tsne_x": -3.0757,
+          "tsne_y": 8.6382,
+          "gt_instance_count": 16,
+          "pred_instance_count": 5,
+          "missed_coco_classes": [
+            "truck"
+          ],
+          "layman_issue": "The scene is crowded (16 objects labeled). The model only found about 5, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 6.8391,
+          "umap_y": 4.4099
+        },
+        {
+          "image": "000000000113.jpg",
+          "stem": "000000000113",
+          "kmeans_cluster": 3,
+          "tsne_x": 4.2919,
+          "tsne_y": -3.7046,
+          "gt_instance_count": 18,
+          "pred_instance_count": 8,
+          "missed_coco_classes": [
+            "knife"
+          ],
+          "layman_issue": "The scene is crowded (18 objects labeled). The model only found about 8, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 9.8094,
+          "umap_y": 2.6781
+        },
+        {
+          "image": "000000000133.jpg",
+          "stem": "000000000133",
+          "kmeans_cluster": 3,
+          "tsne_x": 1.7135,
+          "tsne_y": -0.6561,
+          "gt_instance_count": 2,
+          "pred_instance_count": 1,
+          "missed_coco_classes": [
+            "teddy bear"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. teddy bear). Labeled 2 objects vs 1 detected.",
+          "umap_x": 9.1587,
+          "umap_y": 3.8008
+        },
+        {
+          "image": "000000000136.jpg",
+          "stem": "000000000136",
+          "kmeans_cluster": 3,
+          "tsne_x": 0.0548,
+          "tsne_y": 0.9055,
+          "gt_instance_count": 4,
+          "pred_instance_count": 4,
+          "missed_coco_classes": [],
+          "layman_issue": "Some objects were found (4 of 4), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+          "umap_x": 8.8162,
+          "umap_y": 2.9292
+        },
+        {
+          "image": "000000000164.jpg",
+          "stem": "000000000164",
+          "kmeans_cluster": 3,
+          "tsne_x": 2.3362,
+          "tsne_y": -2.1343,
+          "gt_instance_count": 40,
+          "pred_instance_count": 9,
+          "missed_coco_classes": [
+            "cup",
+            "bowl",
+            "dining table",
+            "refrigerator"
+          ],
+          "layman_issue": "The scene is crowded (40 objects labeled). The model only found about 9, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 9.2805,
+          "umap_y": 4.0636
+        },
+        {
+          "image": "000000000241.jpg",
+          "stem": "000000000241",
+          "kmeans_cluster": 3,
+          "tsne_x": 0.1018,
+          "tsne_y": -1.9806,
+          "gt_instance_count": 14,
+          "pred_instance_count": 11,
+          "missed_coco_classes": [
+            "potted plant"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. potted plant). Labeled 14 objects vs 11 detected.",
+          "umap_x": 9.8538,
+          "umap_y": 3.0604
+        },
+        {
+          "image": "000000000260.jpg",
+          "stem": "000000000260",
+          "kmeans_cluster": 3,
+          "tsne_x": -1.7348,
+          "tsne_y": 7.6214,
+          "gt_instance_count": 7,
+          "pred_instance_count": 7,
+          "missed_coco_classes": [],
+          "layman_issue": "Some objects were found (7 of 7), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+          "umap_x": 6.8202,
+          "umap_y": 5.0052
+        },
+        {
+          "image": "000000000308.jpg",
+          "stem": "000000000308",
+          "kmeans_cluster": 3,
+          "tsne_x": 3.0965,
+          "tsne_y": -4.4901,
+          "gt_instance_count": 13,
+          "pred_instance_count": 15,
+          "missed_coco_classes": [
+            "clock"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. clock). Labeled 13 objects vs 15 detected.",
+          "umap_x": 9.3556,
+          "umap_y": 4.5771
+        },
+        {
+          "image": "000000000357.jpg",
+          "stem": "000000000357",
+          "kmeans_cluster": 3,
+          "tsne_x": -5.6917,
+          "tsne_y": -0.4419,
+          "gt_instance_count": 17,
+          "pred_instance_count": 10,
+          "missed_coco_classes": [
+            "baseball glove"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. baseball glove). Labeled 17 objects vs 10 detected.",
+          "umap_x": 7.5218,
+          "umap_y": 3.0411
+        },
+        {
+          "image": "000000000384.jpg",
+          "stem": "000000000384",
+          "kmeans_cluster": 3,
+          "tsne_x": 1.9338,
+          "tsne_y": 0.4706,
+          "gt_instance_count": 11,
+          "pred_instance_count": 5,
+          "missed_coco_classes": [
+            "laptop",
+            "mouse",
+            "remote"
+          ],
+          "layman_issue": "The scene is crowded (11 objects labeled). The model only found about 5, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 9.1303,
+          "umap_y": 2.6049
+        },
+        {
+          "image": "000000000389.jpg",
+          "stem": "000000000389",
+          "kmeans_cluster": 3,
+          "tsne_x": 5.3075,
+          "tsne_y": 5.6042,
+          "gt_instance_count": 14,
+          "pred_instance_count": 10,
+          "missed_coco_classes": [
+            "backpack"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. backpack). Labeled 14 objects vs 10 detected.",
+          "umap_x": 10.4719,
+          "umap_y": 2.9017
+        },
+        {
+          "image": "000000000395.jpg",
+          "stem": "000000000395",
+          "kmeans_cluster": 3,
+          "tsne_x": 4.5693,
+          "tsne_y": 5.8203,
+          "gt_instance_count": 13,
+          "pred_instance_count": 10,
+          "missed_coco_classes": [],
+          "layman_issue": "Some objects were found (10 of 13), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+          "umap_x": 10.7024,
+          "umap_y": 2.6282
+        },
+        {
+          "image": "000000000446.jpg",
+          "stem": "000000000446",
+          "kmeans_cluster": 3,
+          "tsne_x": 0.4613,
+          "tsne_y": -1.351,
+          "gt_instance_count": 13,
+          "pred_instance_count": 4,
+          "missed_coco_classes": [
+            "remote",
+            "book"
+          ],
+          "layman_issue": "The scene is crowded (13 objects labeled). The model only found about 4, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 9.9608,
+          "umap_y": 3.4442
+        },
+        {
+          "image": "000000000514.jpg",
+          "stem": "000000000514",
+          "kmeans_cluster": 3,
+          "tsne_x": 1.4874,
+          "tsne_y": 0.1654,
+          "gt_instance_count": 1,
+          "pred_instance_count": 0,
+          "missed_coco_classes": [
+            "bed"
+          ],
+          "layman_issue": "The model found nothing, but 1 object(s) should be there. The scene was effectively skipped.",
+          "umap_x": 9.4385,
+          "umap_y": 2.7329
+        },
+        {
+          "image": "000000000536.jpg",
+          "stem": "000000000536",
+          "kmeans_cluster": 3,
+          "tsne_x": -0.5316,
+          "tsne_y": -0.9481,
+          "gt_instance_count": 11,
+          "pred_instance_count": 4,
+          "missed_coco_classes": [
+            "handbag",
+            "chair",
+            "cell phone"
+          ],
+          "layman_issue": "The scene is crowded (11 objects labeled). The model only found about 4, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 10.0956,
+          "umap_y": 2.9325
+        },
+        {
+          "image": "000000000544.jpg",
+          "stem": "000000000544",
+          "kmeans_cluster": 3,
+          "tsne_x": -5.8386,
+          "tsne_y": -0.5663,
+          "gt_instance_count": 16,
+          "pred_instance_count": 9,
+          "missed_coco_classes": [
+            "sports ball",
+            "baseball bat"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. sports ball, baseball bat). Labeled 16 objects vs 9 detected.",
+          "umap_x": 7.2695,
+          "umap_y": 2.8049
+        },
+        {
+          "image": "000000000560.jpg",
+          "stem": "000000000560",
+          "kmeans_cluster": 3,
+          "tsne_x": 5.7073,
+          "tsne_y": -0.1004,
+          "gt_instance_count": 5,
+          "pred_instance_count": 3,
+          "missed_coco_classes": [
+            "toilet",
+            "cell phone"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. toilet, cell phone). Labeled 5 objects vs 3 detected.",
+          "umap_x": 9.254,
+          "umap_y": 3.147
+        },
+        {
+          "image": "000000000564.jpg",
+          "stem": "000000000564",
+          "kmeans_cluster": 3,
+          "tsne_x": -5.9896,
+          "tsne_y": 1.6038,
+          "gt_instance_count": 16,
+          "pred_instance_count": 38,
+          "missed_coco_classes": [],
+          "layman_issue": "Some objects were found (38 of 16), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+          "umap_x": 7.498,
+          "umap_y": 2.2093
+        },
+        {
+          "image": "000000000590.jpg",
+          "stem": "000000000590",
+          "kmeans_cluster": 3,
+          "tsne_x": 5.5265,
+          "tsne_y": -0.0036,
+          "gt_instance_count": 2,
+          "pred_instance_count": 3,
+          "missed_coco_classes": [
+            "bowl"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. bowl). Labeled 2 objects vs 3 detected.",
+          "umap_x": 9.3283,
+          "umap_y": 3.2262
+        },
+        {
+          "image": "000000000612.jpg",
+          "stem": "000000000612",
+          "kmeans_cluster": 3,
+          "tsne_x": -2.7581,
+          "tsne_y": -2.9031,
+          "gt_instance_count": 11,
+          "pred_instance_count": 6,
+          "missed_coco_classes": [],
+          "layman_issue": "Some objects were found (6 of 11), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+          "umap_x": 9.069,
+          "umap_y": 2.0891
+        },
+        {
+          "image": "000000000623.jpg",
+          "stem": "000000000623",
+          "kmeans_cluster": 3,
+          "tsne_x": -1.5054,
+          "tsne_y": -2.5137,
+          "gt_instance_count": 4,
+          "pred_instance_count": 2,
+          "missed_coco_classes": [
+            "bench",
+            "chair"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. bench, chair). Labeled 4 objects vs 2 detected.",
+          "umap_x": 9.4869,
+          "umap_y": 2.1761
+        },
+        {
+          "image": "000000000641.jpg",
+          "stem": "000000000641",
+          "kmeans_cluster": 3,
+          "tsne_x": 0.4612,
+          "tsne_y": 6.3432,
+          "gt_instance_count": 12,
+          "pred_instance_count": 4,
+          "missed_coco_classes": [
+            "bicycle"
+          ],
+          "layman_issue": "The scene is crowded (12 objects labeled). The model only found about 4, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 7.3211,
+          "umap_y": 5.4013
+        },
+        {
+          "image": "000000000643.jpg",
+          "stem": "000000000643",
+          "kmeans_cluster": 3,
+          "tsne_x": 1.3831,
+          "tsne_y": -1.5544,
+          "gt_instance_count": 20,
+          "pred_instance_count": 5,
+          "missed_coco_classes": [
+            "mouse",
+            "book"
+          ],
+          "layman_issue": "The scene is crowded (20 objects labeled). The model only found about 5, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 9.6092,
+          "umap_y": 3.5523
+        },
+        {
+          "image": "sample.jpg",
+          "stem": "sample",
+          "kmeans_cluster": 3,
+          "tsne_x": 0.4559,
+          "tsne_y": 4.8864,
+          "gt_instance_count": 0,
+          "pred_instance_count": 9,
+          "missed_coco_classes": [],
+          "layman_issue": "Some objects were found (9 of 0), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+          "umap_x": 7.7194,
+          "umap_y": 5.4168
+        }
+      ]
+    },
+    {
+      "group_id": 4,
+      "layman_title": "Busy scenes \u2014 lots of objects (carrot, spoon, bowl)",
+      "layman_why": "These photos have many things in one frame. The model tends to catch the big, obvious objects and miss smaller or overlapping ones \u2014 like a busy street or a table full of items.",
+      "image_count": 7,
+      "images": [
+        "000000000009.jpg",
+        "000000000110.jpg",
+        "000000000196.jpg",
+        "000000000294.jpg",
+        "000000000397.jpg",
+        "000000000486.jpg",
+        "000000000584.jpg"
+      ],
+      "avg_objects_per_image": 17.57,
+      "common_coco_classes": [
+        {
+          "class_id": 51,
+          "coco_name": "carrot",
+          "instance_count": 22
+        },
+        {
+          "class_id": 44,
+          "coco_name": "spoon",
+          "instance_count": 20
+        },
+        {
+          "class_id": 45,
+          "coco_name": "bowl",
+          "instance_count": 18
+        },
+        {
+          "class_id": 0,
+          "coco_name": "person",
+          "instance_count": 12
+        },
+        {
+          "class_id": 50,
+          "coco_name": "broccoli",
+          "instance_count": 10
+        },
+        {
+          "class_id": 43,
+          "coco_name": "knife",
+          "instance_count": 8
+        },
+        {
+          "class_id": 41,
+          "coco_name": "cup",
+          "instance_count": 6
+        },
+        {
+          "class_id": 56,
+          "coco_name": "chair",
+          "instance_count": 5
+        }
+      ],
+      "members": [
+        {
+          "image": "000000000009.jpg",
+          "stem": "000000000009",
+          "kmeans_cluster": 4,
+          "tsne_x": -1.1911,
+          "tsne_y": -5.8487,
+          "gt_instance_count": 8,
+          "pred_instance_count": 7,
+          "missed_coco_classes": [
+            "orange"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. orange). Labeled 8 objects vs 7 detected.",
+          "umap_x": 10.5439,
+          "umap_y": 4.4176
+        },
+        {
+          "image": "000000000110.jpg",
+          "stem": "000000000110",
+          "kmeans_cluster": 4,
+          "tsne_x": 1.2694,
+          "tsne_y": -6.6549,
+          "gt_instance_count": 24,
+          "pred_instance_count": 18,
+          "missed_coco_classes": [
+            "fork"
+          ],
+          "layman_issue": "The model often misses entire categories here (e.g. fork). Labeled 24 objects vs 18 detected.",
+          "umap_x": 10.1287,
+          "umap_y": 4.4119
+        },
+        {
+          "image": "000000000196.jpg",
+          "stem": "000000000196",
+          "kmeans_cluster": 4,
+          "tsne_x": 0.0662,
+          "tsne_y": -5.8947,
+          "gt_instance_count": 42,
+          "pred_instance_count": 17,
+          "missed_coco_classes": [
+            "fork",
+            "broccoli"
+          ],
+          "layman_issue": "The scene is crowded (42 objects labeled). The model only found about 17, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 10.4194,
+          "umap_y": 4.6477
+        },
+        {
+          "image": "000000000294.jpg",
+          "stem": "000000000294",
+          "kmeans_cluster": 4,
+          "tsne_x": 1.5563,
+          "tsne_y": -3.2222,
+          "gt_instance_count": 20,
+          "pred_instance_count": 3,
+          "missed_coco_classes": [
+            "fork",
+            "knife",
+            "spoon"
+          ],
+          "layman_issue": "The scene is crowded (20 objects labeled). The model only found about 3, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 9.9165,
+          "umap_y": 3.988
+        },
+        {
+          "image": "000000000397.jpg",
+          "stem": "000000000397",
+          "kmeans_cluster": 4,
+          "tsne_x": 0.9612,
+          "tsne_y": -6.5719,
+          "gt_instance_count": 7,
+          "pred_instance_count": 3,
+          "missed_coco_classes": [
+            "cup",
+            "fork",
+            "dining table"
+          ],
+          "layman_issue": "The scene is crowded (7 objects labeled). The model only found about 3, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 10.3116,
+          "umap_y": 4.742
+        },
+        {
+          "image": "000000000486.jpg",
+          "stem": "000000000486",
+          "kmeans_cluster": 4,
+          "tsne_x": 2.2133,
+          "tsne_y": -2.8703,
+          "gt_instance_count": 8,
+          "pred_instance_count": 2,
+          "missed_coco_classes": [
+            "bottle",
+            "knife",
+            "oven",
+            "refrigerator"
+          ],
+          "layman_issue": "The scene is crowded (8 objects labeled). The model only found about 2, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 9.6165,
+          "umap_y": 4.7894
+        },
+        {
+          "image": "000000000584.jpg",
+          "stem": "000000000584",
+          "kmeans_cluster": 4,
+          "tsne_x": -0.2907,
+          "tsne_y": -5.3184,
+          "gt_instance_count": 14,
+          "pred_instance_count": 6,
+          "missed_coco_classes": [],
+          "layman_issue": "The scene is crowded (14 objects labeled). The model only found about 6, so many things were missed \u2014 often smaller items or overlapping objects.",
+          "umap_x": 10.2316,
+          "umap_y": 4.9836
+        }
+      ]
+    }
+  ],
+  "per_image": [
+    {
+      "image": "000000000042.jpg",
+      "stem": "000000000042",
+      "kmeans_cluster": 0,
+      "tsne_x": -1.6495,
+      "tsne_y": 0.5749,
+      "gt_instance_count": 1,
+      "pred_instance_count": 3,
+      "missed_coco_classes": [
+        "dog"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. dog). Labeled 1 objects vs 3 detected.",
+      "umap_x": 8.4798,
+      "umap_y": 2.8165
+    },
+    {
+      "image": "000000000061.jpg",
+      "stem": "000000000061",
+      "kmeans_cluster": 0,
+      "tsne_x": -2.0603,
+      "tsne_y": 1.9365,
+      "gt_instance_count": 5,
+      "pred_instance_count": 3,
+      "missed_coco_classes": [
+        "elephant"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. elephant). Labeled 5 objects vs 3 detected.",
+      "umap_x": 8.3952,
+      "umap_y": 3.7339
+    },
+    {
+      "image": "000000000074.jpg",
+      "stem": "000000000074",
+      "kmeans_cluster": 0,
+      "tsne_x": -0.5953,
+      "tsne_y": 3.3425,
+      "gt_instance_count": 8,
+      "pred_instance_count": 6,
+      "missed_coco_classes": [],
+      "layman_issue": "Some objects were found (6 of 8), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+      "umap_x": 8.2175,
+      "umap_y": 3.336
+    },
+    {
+      "image": "000000000127.jpg",
+      "stem": "000000000127",
+      "kmeans_cluster": 0,
+      "tsne_x": 3.9231,
+      "tsne_y": -2.1822,
+      "gt_instance_count": 17,
+      "pred_instance_count": 10,
+      "missed_coco_classes": [
+        "person",
+        "umbrella",
+        "handbag",
+        "potted plant",
+        "book"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. person, umbrella, handbag, potted plant\u2026). Labeled 17 objects vs 10 detected.",
+      "umap_x": 9.4629,
+      "umap_y": 4.258
+    },
+    {
+      "image": "000000000201.jpg",
+      "stem": "000000000201",
+      "kmeans_cluster": 0,
+      "tsne_x": 3.7871,
+      "tsne_y": 2.7505,
+      "gt_instance_count": 8,
+      "pred_instance_count": 10,
+      "missed_coco_classes": [],
+      "layman_issue": "Some objects were found (10 of 8), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+      "umap_x": 8.3703,
+      "umap_y": 4.5177
+    },
+    {
+      "image": "000000000208.jpg",
+      "stem": "000000000208",
+      "kmeans_cluster": 0,
+      "tsne_x": 3.8833,
+      "tsne_y": -0.1058,
+      "gt_instance_count": 4,
+      "pred_instance_count": 2,
+      "missed_coco_classes": [
+        "toothbrush"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. toothbrush). Labeled 4 objects vs 2 detected.",
+      "umap_x": 8.9245,
+      "umap_y": 3.2813
+    },
+    {
+      "image": "000000000250.jpg",
+      "stem": "000000000250",
+      "kmeans_cluster": 0,
+      "tsne_x": 1.514,
+      "tsne_y": 4.4012,
+      "gt_instance_count": 0,
+      "pred_instance_count": 0,
+      "missed_coco_classes": [],
+      "layman_issue": "No labeled objects to compare \u2014 the model did not produce usable masks for scoring.",
+      "umap_x": 7.8382,
+      "umap_y": 4.9333
+    },
+    {
+      "image": "000000000309.jpg",
+      "stem": "000000000309",
+      "kmeans_cluster": 0,
+      "tsne_x": -1.987,
+      "tsne_y": 1.4796,
+      "gt_instance_count": 4,
+      "pred_instance_count": 3,
+      "missed_coco_classes": [
+        "teddy bear"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. teddy bear). Labeled 4 objects vs 3 detected.",
+      "umap_x": 7.9383,
+      "umap_y": 3.0424
+    },
+    {
+      "image": "000000000328.jpg",
+      "stem": "000000000328",
+      "kmeans_cluster": 0,
+      "tsne_x": -3.1274,
+      "tsne_y": -0.4732,
+      "gt_instance_count": 11,
+      "pred_instance_count": 3,
+      "missed_coco_classes": [
+        "car",
+        "bench",
+        "backpack",
+        "tie",
+        "cell phone",
+        "book"
+      ],
+      "layman_issue": "The scene is crowded (11 objects labeled). The model only found about 3, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 7.8916,
+      "umap_y": 3.9501
+    },
+    {
+      "image": "000000000359.jpg",
+      "stem": "000000000359",
+      "kmeans_cluster": 0,
+      "tsne_x": 0.7102,
+      "tsne_y": 4.2709,
+      "gt_instance_count": 4,
+      "pred_instance_count": 2,
+      "missed_coco_classes": [],
+      "layman_issue": "Some objects were found (2 of 4), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+      "umap_x": 7.6215,
+      "umap_y": 4.5467
+    },
+    {
+      "image": "000000000474.jpg",
+      "stem": "000000000474",
+      "kmeans_cluster": 0,
+      "tsne_x": -3.6318,
+      "tsne_y": 1.5198,
+      "gt_instance_count": 2,
+      "pred_instance_count": 2,
+      "missed_coco_classes": [],
+      "layman_issue": "Some objects were found (2 of 2), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+      "umap_x": 7.8194,
+      "umap_y": 2.6561
+    },
+    {
+      "image": "000000000490.jpg",
+      "stem": "000000000490",
+      "kmeans_cluster": 0,
+      "tsne_x": -0.1379,
+      "tsne_y": 2.4556,
+      "gt_instance_count": 2,
+      "pred_instance_count": 2,
+      "missed_coco_classes": [],
+      "layman_issue": "Some objects were found (2 of 2), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+      "umap_x": 7.9734,
+      "umap_y": 3.5975
+    },
+    {
+      "image": "000000000491.jpg",
+      "stem": "000000000491",
+      "kmeans_cluster": 0,
+      "tsne_x": -2.2717,
+      "tsne_y": -2.4324,
+      "gt_instance_count": 4,
+      "pred_instance_count": 2,
+      "missed_coco_classes": [
+        "teddy bear"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. teddy bear). Labeled 4 objects vs 2 detected.",
+      "umap_x": 8.8625,
+      "umap_y": 2.1353
+    },
+    {
+      "image": "000000000508.jpg",
+      "stem": "000000000508",
+      "kmeans_cluster": 0,
+      "tsne_x": 4.2078,
+      "tsne_y": 2.7569,
+      "gt_instance_count": 0,
+      "pred_instance_count": 0,
+      "missed_coco_classes": [],
+      "layman_issue": "No labeled objects to compare \u2014 the model did not produce usable masks for scoring.",
+      "umap_x": 8.688,
+      "umap_y": 4.4581
+    },
+    {
+      "image": "000000000581.jpg",
+      "stem": "000000000581",
+      "kmeans_cluster": 0,
+      "tsne_x": -0.1021,
+      "tsne_y": 1.4178,
+      "gt_instance_count": 1,
+      "pred_instance_count": 3,
+      "missed_coco_classes": [],
+      "layman_issue": "Some objects were found (3 of 1), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+      "umap_x": 8.6906,
+      "umap_y": 3.1399
+    },
+    {
+      "image": "000000000049.jpg",
+      "stem": "000000000049",
+      "kmeans_cluster": 1,
+      "tsne_x": -2.7631,
+      "tsne_y": 3.2204,
+      "gt_instance_count": 9,
+      "pred_instance_count": 9,
+      "missed_coco_classes": [
+        "potted plant"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. potted plant). Labeled 9 objects vs 9 detected.",
+      "umap_x": 7.4101,
+      "umap_y": 3.6433
+    },
+    {
+      "image": "000000000077.jpg",
+      "stem": "000000000077",
+      "kmeans_cluster": 1,
+      "tsne_x": 1.6853,
+      "tsne_y": 2.661,
+      "gt_instance_count": 8,
+      "pred_instance_count": 4,
+      "missed_coco_classes": [
+        "skateboard"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. skateboard). Labeled 8 objects vs 4 detected.",
+      "umap_x": 7.7255,
+      "umap_y": 4.0872
+    },
+    {
+      "image": "000000000109.jpg",
+      "stem": "000000000109",
+      "kmeans_cluster": 1,
+      "tsne_x": -3.4001,
+      "tsne_y": 5.4259,
+      "gt_instance_count": 8,
+      "pred_instance_count": 7,
+      "missed_coco_classes": [
+        "dog"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. dog). Labeled 8 objects vs 7 detected.",
+      "umap_x": 6.6536,
+      "umap_y": 3.8445
+    },
+    {
+      "image": "000000000149.jpg",
+      "stem": "000000000149",
+      "kmeans_cluster": 1,
+      "tsne_x": -2.7548,
+      "tsne_y": 4.1778,
+      "gt_instance_count": 22,
+      "pred_instance_count": 6,
+      "missed_coco_classes": [
+        "car"
+      ],
+      "layman_issue": "The scene is crowded (22 objects labeled). The model only found about 6, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 6.9914,
+      "umap_y": 3.5474
+    },
+    {
+      "image": "000000000257.jpg",
+      "stem": "000000000257",
+      "kmeans_cluster": 1,
+      "tsne_x": 2.142,
+      "tsne_y": 6.0049,
+      "gt_instance_count": 33,
+      "pred_instance_count": 22,
+      "missed_coco_classes": [
+        "handbag"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. handbag). Labeled 33 objects vs 22 detected.",
+      "umap_x": 7.5747,
+      "umap_y": 4.8676
+    },
+    {
+      "image": "000000000315.jpg",
+      "stem": "000000000315",
+      "kmeans_cluster": 1,
+      "tsne_x": -3.9124,
+      "tsne_y": 6.8396,
+      "gt_instance_count": 38,
+      "pred_instance_count": 13,
+      "missed_coco_classes": [
+        "handbag",
+        "chair"
+      ],
+      "layman_issue": "The scene is crowded (38 objects labeled). The model only found about 13, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 7.1298,
+      "umap_y": 4.6719
+    },
+    {
+      "image": "000000000360.jpg",
+      "stem": "000000000360",
+      "kmeans_cluster": 1,
+      "tsne_x": 2.7939,
+      "tsne_y": 2.7675,
+      "gt_instance_count": 3,
+      "pred_instance_count": 3,
+      "missed_coco_classes": [
+        "snowboard"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. snowboard). Labeled 3 objects vs 3 detected.",
+      "umap_x": 8.1931,
+      "umap_y": 4.2923
+    },
+    {
+      "image": "000000000419.jpg",
+      "stem": "000000000419",
+      "kmeans_cluster": 1,
+      "tsne_x": -5.9798,
+      "tsne_y": 2.8356,
+      "gt_instance_count": 7,
+      "pred_instance_count": 3,
+      "missed_coco_classes": [
+        "car",
+        "sports ball"
+      ],
+      "layman_issue": "The scene is crowded (7 objects labeled). The model only found about 3, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 7.3165,
+      "umap_y": 2.3161
+    },
+    {
+      "image": "000000000472.jpg",
+      "stem": "000000000472",
+      "kmeans_cluster": 1,
+      "tsne_x": -1.967,
+      "tsne_y": 6.2288,
+      "gt_instance_count": 1,
+      "pred_instance_count": 1,
+      "missed_coco_classes": [],
+      "layman_issue": "Some objects were found (1 of 1), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+      "umap_x": 6.2947,
+      "umap_y": 4.3392
+    },
+    {
+      "image": "000000000520.jpg",
+      "stem": "000000000520",
+      "kmeans_cluster": 1,
+      "tsne_x": -2.5545,
+      "tsne_y": 5.0411,
+      "gt_instance_count": 11,
+      "pred_instance_count": 6,
+      "missed_coco_classes": [
+        "person"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. person). Labeled 11 objects vs 6 detected.",
+      "umap_x": 6.8611,
+      "umap_y": 4.197
+    },
+    {
+      "image": "000000000531.jpg",
+      "stem": "000000000531",
+      "kmeans_cluster": 1,
+      "tsne_x": -5.9232,
+      "tsne_y": 3.1195,
+      "gt_instance_count": 15,
+      "pred_instance_count": 10,
+      "missed_coco_classes": [
+        "bicycle",
+        "sports ball"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. bicycle, sports ball). Labeled 15 objects vs 10 detected.",
+      "umap_x": 6.9982,
+      "umap_y": 2.4839
+    },
+    {
+      "image": "000000000247.jpg",
+      "stem": "000000000247",
+      "kmeans_cluster": 2,
+      "tsne_x": -0.0992,
+      "tsne_y": 9.1325,
+      "gt_instance_count": 8,
+      "pred_instance_count": 3,
+      "missed_coco_classes": [],
+      "layman_issue": "The scene is crowded (8 objects labeled). The model only found about 3, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 6.2289,
+      "umap_y": 4.9372
+    },
+    {
+      "image": "000000000540.jpg",
+      "stem": "000000000540",
+      "kmeans_cluster": 2,
+      "tsne_x": -1.3914,
+      "tsne_y": 7.9204,
+      "gt_instance_count": 20,
+      "pred_instance_count": 1,
+      "missed_coco_classes": [
+        "car",
+        "bus",
+        "truck",
+        "traffic light"
+      ],
+      "layman_issue": "The scene is crowded (20 objects labeled). The model only found about 1, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 6.5432,
+      "umap_y": 4.877
+    },
+    {
+      "image": "000000000542.jpg",
+      "stem": "000000000542",
+      "kmeans_cluster": 2,
+      "tsne_x": 0.0338,
+      "tsne_y": 9.3857,
+      "gt_instance_count": 17,
+      "pred_instance_count": 12,
+      "missed_coco_classes": [
+        "handbag",
+        "tie"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. handbag, tie). Labeled 17 objects vs 12 detected.",
+      "umap_x": 6.033,
+      "umap_y": 4.65
+    },
+    {
+      "image": "000000000071.jpg",
+      "stem": "000000000071",
+      "kmeans_cluster": 3,
+      "tsne_x": -3.0757,
+      "tsne_y": 8.6382,
+      "gt_instance_count": 16,
+      "pred_instance_count": 5,
+      "missed_coco_classes": [
+        "truck"
+      ],
+      "layman_issue": "The scene is crowded (16 objects labeled). The model only found about 5, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 6.8391,
+      "umap_y": 4.4099
+    },
+    {
+      "image": "000000000113.jpg",
+      "stem": "000000000113",
+      "kmeans_cluster": 3,
+      "tsne_x": 4.2919,
+      "tsne_y": -3.7046,
+      "gt_instance_count": 18,
+      "pred_instance_count": 8,
+      "missed_coco_classes": [
+        "knife"
+      ],
+      "layman_issue": "The scene is crowded (18 objects labeled). The model only found about 8, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 9.8094,
+      "umap_y": 2.6781
+    },
+    {
+      "image": "000000000133.jpg",
+      "stem": "000000000133",
+      "kmeans_cluster": 3,
+      "tsne_x": 1.7135,
+      "tsne_y": -0.6561,
+      "gt_instance_count": 2,
+      "pred_instance_count": 1,
+      "missed_coco_classes": [
+        "teddy bear"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. teddy bear). Labeled 2 objects vs 1 detected.",
+      "umap_x": 9.1587,
+      "umap_y": 3.8008
+    },
+    {
+      "image": "000000000136.jpg",
+      "stem": "000000000136",
+      "kmeans_cluster": 3,
+      "tsne_x": 0.0548,
+      "tsne_y": 0.9055,
+      "gt_instance_count": 4,
+      "pred_instance_count": 4,
+      "missed_coco_classes": [],
+      "layman_issue": "Some objects were found (4 of 4), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+      "umap_x": 8.8162,
+      "umap_y": 2.9292
+    },
+    {
+      "image": "000000000164.jpg",
+      "stem": "000000000164",
+      "kmeans_cluster": 3,
+      "tsne_x": 2.3362,
+      "tsne_y": -2.1343,
+      "gt_instance_count": 40,
+      "pred_instance_count": 9,
+      "missed_coco_classes": [
+        "cup",
+        "bowl",
+        "dining table",
+        "refrigerator"
+      ],
+      "layman_issue": "The scene is crowded (40 objects labeled). The model only found about 9, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 9.2805,
+      "umap_y": 4.0636
+    },
+    {
+      "image": "000000000241.jpg",
+      "stem": "000000000241",
+      "kmeans_cluster": 3,
+      "tsne_x": 0.1018,
+      "tsne_y": -1.9806,
+      "gt_instance_count": 14,
+      "pred_instance_count": 11,
+      "missed_coco_classes": [
+        "potted plant"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. potted plant). Labeled 14 objects vs 11 detected.",
+      "umap_x": 9.8538,
+      "umap_y": 3.0604
+    },
+    {
+      "image": "000000000260.jpg",
+      "stem": "000000000260",
+      "kmeans_cluster": 3,
+      "tsne_x": -1.7348,
+      "tsne_y": 7.6214,
+      "gt_instance_count": 7,
+      "pred_instance_count": 7,
+      "missed_coco_classes": [],
+      "layman_issue": "Some objects were found (7 of 7), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+      "umap_x": 6.8202,
+      "umap_y": 5.0052
+    },
+    {
+      "image": "000000000308.jpg",
+      "stem": "000000000308",
+      "kmeans_cluster": 3,
+      "tsne_x": 3.0965,
+      "tsne_y": -4.4901,
+      "gt_instance_count": 13,
+      "pred_instance_count": 15,
+      "missed_coco_classes": [
+        "clock"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. clock). Labeled 13 objects vs 15 detected.",
+      "umap_x": 9.3556,
+      "umap_y": 4.5771
+    },
+    {
+      "image": "000000000357.jpg",
+      "stem": "000000000357",
+      "kmeans_cluster": 3,
+      "tsne_x": -5.6917,
+      "tsne_y": -0.4419,
+      "gt_instance_count": 17,
+      "pred_instance_count": 10,
+      "missed_coco_classes": [
+        "baseball glove"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. baseball glove). Labeled 17 objects vs 10 detected.",
+      "umap_x": 7.5218,
+      "umap_y": 3.0411
+    },
+    {
+      "image": "000000000384.jpg",
+      "stem": "000000000384",
+      "kmeans_cluster": 3,
+      "tsne_x": 1.9338,
+      "tsne_y": 0.4706,
+      "gt_instance_count": 11,
+      "pred_instance_count": 5,
+      "missed_coco_classes": [
+        "laptop",
+        "mouse",
+        "remote"
+      ],
+      "layman_issue": "The scene is crowded (11 objects labeled). The model only found about 5, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 9.1303,
+      "umap_y": 2.6049
+    },
+    {
+      "image": "000000000389.jpg",
+      "stem": "000000000389",
+      "kmeans_cluster": 3,
+      "tsne_x": 5.3075,
+      "tsne_y": 5.6042,
+      "gt_instance_count": 14,
+      "pred_instance_count": 10,
+      "missed_coco_classes": [
+        "backpack"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. backpack). Labeled 14 objects vs 10 detected.",
+      "umap_x": 10.4719,
+      "umap_y": 2.9017
+    },
+    {
+      "image": "000000000395.jpg",
+      "stem": "000000000395",
+      "kmeans_cluster": 3,
+      "tsne_x": 4.5693,
+      "tsne_y": 5.8203,
+      "gt_instance_count": 13,
+      "pred_instance_count": 10,
+      "missed_coco_classes": [],
+      "layman_issue": "Some objects were found (10 of 13), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+      "umap_x": 10.7024,
+      "umap_y": 2.6282
+    },
+    {
+      "image": "000000000446.jpg",
+      "stem": "000000000446",
+      "kmeans_cluster": 3,
+      "tsne_x": 0.4613,
+      "tsne_y": -1.351,
+      "gt_instance_count": 13,
+      "pred_instance_count": 4,
+      "missed_coco_classes": [
+        "remote",
+        "book"
+      ],
+      "layman_issue": "The scene is crowded (13 objects labeled). The model only found about 4, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 9.9608,
+      "umap_y": 3.4442
+    },
+    {
+      "image": "000000000514.jpg",
+      "stem": "000000000514",
+      "kmeans_cluster": 3,
+      "tsne_x": 1.4874,
+      "tsne_y": 0.1654,
+      "gt_instance_count": 1,
+      "pred_instance_count": 0,
+      "missed_coco_classes": [
+        "bed"
+      ],
+      "layman_issue": "The model found nothing, but 1 object(s) should be there. The scene was effectively skipped.",
+      "umap_x": 9.4385,
+      "umap_y": 2.7329
+    },
+    {
+      "image": "000000000536.jpg",
+      "stem": "000000000536",
+      "kmeans_cluster": 3,
+      "tsne_x": -0.5316,
+      "tsne_y": -0.9481,
+      "gt_instance_count": 11,
+      "pred_instance_count": 4,
+      "missed_coco_classes": [
+        "handbag",
+        "chair",
+        "cell phone"
+      ],
+      "layman_issue": "The scene is crowded (11 objects labeled). The model only found about 4, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 10.0956,
+      "umap_y": 2.9325
+    },
+    {
+      "image": "000000000544.jpg",
+      "stem": "000000000544",
+      "kmeans_cluster": 3,
+      "tsne_x": -5.8386,
+      "tsne_y": -0.5663,
+      "gt_instance_count": 16,
+      "pred_instance_count": 9,
+      "missed_coco_classes": [
+        "sports ball",
+        "baseball bat"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. sports ball, baseball bat). Labeled 16 objects vs 9 detected.",
+      "umap_x": 7.2695,
+      "umap_y": 2.8049
+    },
+    {
+      "image": "000000000560.jpg",
+      "stem": "000000000560",
+      "kmeans_cluster": 3,
+      "tsne_x": 5.7073,
+      "tsne_y": -0.1004,
+      "gt_instance_count": 5,
+      "pred_instance_count": 3,
+      "missed_coco_classes": [
+        "toilet",
+        "cell phone"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. toilet, cell phone). Labeled 5 objects vs 3 detected.",
+      "umap_x": 9.254,
+      "umap_y": 3.147
+    },
+    {
+      "image": "000000000564.jpg",
+      "stem": "000000000564",
+      "kmeans_cluster": 3,
+      "tsne_x": -5.9896,
+      "tsne_y": 1.6038,
+      "gt_instance_count": 16,
+      "pred_instance_count": 38,
+      "missed_coco_classes": [],
+      "layman_issue": "Some objects were found (38 of 16), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+      "umap_x": 7.498,
+      "umap_y": 2.2093
+    },
+    {
+      "image": "000000000590.jpg",
+      "stem": "000000000590",
+      "kmeans_cluster": 3,
+      "tsne_x": 5.5265,
+      "tsne_y": -0.0036,
+      "gt_instance_count": 2,
+      "pred_instance_count": 3,
+      "missed_coco_classes": [
+        "bowl"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. bowl). Labeled 2 objects vs 3 detected.",
+      "umap_x": 9.3283,
+      "umap_y": 3.2262
+    },
+    {
+      "image": "000000000612.jpg",
+      "stem": "000000000612",
+      "kmeans_cluster": 3,
+      "tsne_x": -2.7581,
+      "tsne_y": -2.9031,
+      "gt_instance_count": 11,
+      "pred_instance_count": 6,
+      "missed_coco_classes": [],
+      "layman_issue": "Some objects were found (6 of 11), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+      "umap_x": 9.069,
+      "umap_y": 2.0891
+    },
+    {
+      "image": "000000000623.jpg",
+      "stem": "000000000623",
+      "kmeans_cluster": 3,
+      "tsne_x": -1.5054,
+      "tsne_y": -2.5137,
+      "gt_instance_count": 4,
+      "pred_instance_count": 2,
+      "missed_coco_classes": [
+        "bench",
+        "chair"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. bench, chair). Labeled 4 objects vs 2 detected.",
+      "umap_x": 9.4869,
+      "umap_y": 2.1761
+    },
+    {
+      "image": "000000000641.jpg",
+      "stem": "000000000641",
+      "kmeans_cluster": 3,
+      "tsne_x": 0.4612,
+      "tsne_y": 6.3432,
+      "gt_instance_count": 12,
+      "pred_instance_count": 4,
+      "missed_coco_classes": [
+        "bicycle"
+      ],
+      "layman_issue": "The scene is crowded (12 objects labeled). The model only found about 4, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 7.3211,
+      "umap_y": 5.4013
+    },
+    {
+      "image": "000000000643.jpg",
+      "stem": "000000000643",
+      "kmeans_cluster": 3,
+      "tsne_x": 1.3831,
+      "tsne_y": -1.5544,
+      "gt_instance_count": 20,
+      "pred_instance_count": 5,
+      "missed_coco_classes": [
+        "mouse",
+        "book"
+      ],
+      "layman_issue": "The scene is crowded (20 objects labeled). The model only found about 5, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 9.6092,
+      "umap_y": 3.5523
+    },
+    {
+      "image": "sample.jpg",
+      "stem": "sample",
+      "kmeans_cluster": 3,
+      "tsne_x": 0.4559,
+      "tsne_y": 4.8864,
+      "gt_instance_count": 0,
+      "pred_instance_count": 9,
+      "missed_coco_classes": [],
+      "layman_issue": "Some objects were found (9 of 0), but masks may still be wrong shape or class. This image is in the hard set because overall evaluation flagged it.",
+      "umap_x": 7.7194,
+      "umap_y": 5.4168
+    },
+    {
+      "image": "000000000009.jpg",
+      "stem": "000000000009",
+      "kmeans_cluster": 4,
+      "tsne_x": -1.1911,
+      "tsne_y": -5.8487,
+      "gt_instance_count": 8,
+      "pred_instance_count": 7,
+      "missed_coco_classes": [
+        "orange"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. orange). Labeled 8 objects vs 7 detected.",
+      "umap_x": 10.5439,
+      "umap_y": 4.4176
+    },
+    {
+      "image": "000000000110.jpg",
+      "stem": "000000000110",
+      "kmeans_cluster": 4,
+      "tsne_x": 1.2694,
+      "tsne_y": -6.6549,
+      "gt_instance_count": 24,
+      "pred_instance_count": 18,
+      "missed_coco_classes": [
+        "fork"
+      ],
+      "layman_issue": "The model often misses entire categories here (e.g. fork). Labeled 24 objects vs 18 detected.",
+      "umap_x": 10.1287,
+      "umap_y": 4.4119
+    },
+    {
+      "image": "000000000196.jpg",
+      "stem": "000000000196",
+      "kmeans_cluster": 4,
+      "tsne_x": 0.0662,
+      "tsne_y": -5.8947,
+      "gt_instance_count": 42,
+      "pred_instance_count": 17,
+      "missed_coco_classes": [
+        "fork",
+        "broccoli"
+      ],
+      "layman_issue": "The scene is crowded (42 objects labeled). The model only found about 17, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 10.4194,
+      "umap_y": 4.6477
+    },
+    {
+      "image": "000000000294.jpg",
+      "stem": "000000000294",
+      "kmeans_cluster": 4,
+      "tsne_x": 1.5563,
+      "tsne_y": -3.2222,
+      "gt_instance_count": 20,
+      "pred_instance_count": 3,
+      "missed_coco_classes": [
+        "fork",
+        "knife",
+        "spoon"
+      ],
+      "layman_issue": "The scene is crowded (20 objects labeled). The model only found about 3, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 9.9165,
+      "umap_y": 3.988
+    },
+    {
+      "image": "000000000397.jpg",
+      "stem": "000000000397",
+      "kmeans_cluster": 4,
+      "tsne_x": 0.9612,
+      "tsne_y": -6.5719,
+      "gt_instance_count": 7,
+      "pred_instance_count": 3,
+      "missed_coco_classes": [
+        "cup",
+        "fork",
+        "dining table"
+      ],
+      "layman_issue": "The scene is crowded (7 objects labeled). The model only found about 3, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 10.3116,
+      "umap_y": 4.742
+    },
+    {
+      "image": "000000000486.jpg",
+      "stem": "000000000486",
+      "kmeans_cluster": 4,
+      "tsne_x": 2.2133,
+      "tsne_y": -2.8703,
+      "gt_instance_count": 8,
+      "pred_instance_count": 2,
+      "missed_coco_classes": [
+        "bottle",
+        "knife",
+        "oven",
+        "refrigerator"
+      ],
+      "layman_issue": "The scene is crowded (8 objects labeled). The model only found about 2, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 9.6165,
+      "umap_y": 4.7894
+    },
+    {
+      "image": "000000000584.jpg",
+      "stem": "000000000584",
+      "kmeans_cluster": 4,
+      "tsne_x": -0.2907,
+      "tsne_y": -5.3184,
+      "gt_instance_count": 14,
+      "pred_instance_count": 6,
+      "missed_coco_classes": [],
+      "layman_issue": "The scene is crowded (14 objects labeled). The model only found about 6, so many things were missed \u2014 often smaller items or overlapping objects.",
+      "umap_x": 10.2316,
+      "umap_y": 4.9836
+    }
+  ],
+  "training_guide": {
+    "data_to_collect": [
+      "More photos like the issue set: many objects per image (10+ labeled instances).",
+      "Scenes with overlap (people in crowds, items on tables, parked cars close together).",
+      "Extra images containing: person, car, chair, cup, bowl \u2014 these appear most in failed cases.",
+      "Targeted shots for rarely detected classes: fork, orange, mouse, elephant, toothbrush, toilet, laptop.",
+      "Small objects at medium distance (utensils, sports gear, handheld items).",
+      "Same lighting and camera style as your deployment images (not only clean studio shots)."
+    ],
+    "training_actions": [
+      "Fine-tune YOLOv8-seg (or your seg model) on COCO-format labels with polygon masks.",
+      "Use mosaic / copy-paste augmentation to simulate crowded scenes.",
+      "Increase max detections per image and slightly lower confidence at inference for dense scenes.",
+      "Oversample training batches from high-FN images listed in this report.",
+      "Add class-focused epochs or loss weight for person and other top failure classes.",
+      "Validate on a held-out set of issue_eval-style crowded images, not only easy single-object images."
+    ],
+    "metrics_to_track": [
+      "Recall per class (especially person, car, chair, cup, bowl).",
+      "Mask IoU on images with 10+ instances.",
+      "False negative rate = missed GT instances / total GT instances."
+    ],
+    "model_reference": "YOLOv8-seg / COCO 80-class segmentation (Ultralytics)"
+  }
+}

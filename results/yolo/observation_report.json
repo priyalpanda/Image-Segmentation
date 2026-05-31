@@ -1,0 +1,2530 @@
+{
+  "model": "yolo",
+  "source_evaluation": "evaluation.json",
+  "thresholds": {
+    "low_iou": 0.5,
+    "cluttered_min_gt_instances": 10
+  },
+  "summary": {
+    "total_images_in_evaluation": 129,
+    "struggling_images_count": 60,
+    "critical_count": 3,
+    "high_count": 57,
+    "by_issue_count": {
+      "low_iou": 25,
+      "false_negative": 56,
+      "classification_error": 60,
+      "no_segmentation": 3,
+      "no_groundtruth": 3,
+      "false_positive": 56
+    },
+    "by_category_count": {
+      "no_segmentation_output": 3,
+      "unevaluable_no_groundtruth": 1,
+      "cluttered_scene_low_iou": 4,
+      "cluttered_scene_missed_instances": 25,
+      "total_mask_mismatch": 19,
+      "severe_under_detection": 8
+    }
+  },
+  "categories": [
+    {
+      "id": "no_segmentation_output",
+      "title": "No segmentation output",
+      "summary": "The model produced no masks or no label file for these images.",
+      "why_model_struggles": "Without predictions there is nothing to compare to ground truth. Common causes: confidence threshold too high, image content unlike training data, or pipeline did not write labels.",
+      "image_count": 3,
+      "typical_signals": {
+        "avg_iou": 0.0,
+        "avg_false_negative": 0.33,
+        "avg_false_positive": 0.0,
+        "avg_gt_instances": 0.33
+      },
+      "images": [
+        "000000000250.jpg",
+        "000000000508.jpg",
+        "000000000514.jpg"
+      ],
+      "examples": [
+        {
+          "image": "000000000514.jpg",
+          "iou": 0.0,
+          "false_negative": 1,
+          "false_positive": 0,
+          "gt_count": 1,
+          "pred_count": 0,
+          "reason": "No prediction instances (GT=1, pred=0). Model produced no instances while ground truth has 1 instance(s). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth."
+        },
+        {
+          "image": "000000000250.jpg",
+          "iou": 0.0,
+          "false_negative": 0,
+          "false_positive": 0,
+          "gt_count": 0,
+          "pred_count": 0,
+          "reason": "No prediction instances (GT=0, pred=0). No segmentation output (empty labels). Listed under missing_groundtruth \u2014 no ground-truth file to compare against. No ground-truth label file for this image; metrics are not fully comparable. Instance count or class alignment does not match ground truth."
+        },
+        {
+          "image": "000000000508.jpg",
+          "iou": 0.0,
+          "false_negative": 0,
+          "false_positive": 0,
+          "gt_count": 0,
+          "pred_count": 0,
+          "reason": "No prediction instances (GT=0, pred=0). No segmentation output (empty labels). Listed under missing_groundtruth \u2014 no ground-truth file to compare against. No ground-truth label file for this image; metrics are not fully comparable. Instance count or class alignment does not match ground truth."
+        }
+      ]
+    },
+    {
+      "id": "unevaluable_no_groundtruth",
+      "title": "Cannot evaluate (no ground truth)",
+      "summary": "Predictions exist but there is no matching ground-truth label file.",
+      "why_model_struggles": "Metrics are not meaningful without GT. These cases are flagged so they are not confused with model performance on labeled data.",
+      "image_count": 1,
+      "typical_signals": {
+        "avg_iou": 0.0,
+        "avg_false_negative": 0.0,
+        "avg_false_positive": 9.0,
+        "avg_gt_instances": 0.0
+      },
+      "images": [
+        "sample.jpg"
+      ],
+      "examples": [
+        {
+          "image": "sample.jpg",
+          "iou": 0.0,
+          "false_negative": 0,
+          "false_positive": 9,
+          "gt_count": 0,
+          "pred_count": 9,
+          "reason": "No ground-truth labels available for this image; segmentation output cannot be scored."
+        }
+      ]
+    },
+    {
+      "id": "cluttered_scene_low_iou",
+      "title": "Heavily cluttered \u2014 low mask overlap",
+      "summary": "Many objects in the scene and low average IoU on matched instances.",
+      "why_model_struggles": "Crowded scenes with overlapping instances make instance boundaries hard to separate. The model may detect some objects but mask shapes overlap poorly with ground truth, driving IoU down.",
+      "image_count": 4,
+      "typical_signals": {
+        "avg_iou": 0.0,
+        "avg_false_negative": 16.0,
+        "avg_false_positive": 5.25,
+        "avg_gt_instances": 16.0
+      },
+      "images": [
+        "000000000149.jpg",
+        "000000000520.jpg",
+        "000000000536.jpg",
+        "000000000643.jpg"
+      ],
+      "examples": [
+        {
+          "image": "000000000149.jpg",
+          "iou": 0.0,
+          "false_negative": 22,
+          "false_positive": 6,
+          "gt_count": 22,
+          "pred_count": 6,
+          "reason": "22 GT instances (cluttered, \u226510); average IoU 0.00 \u2014 dense overlap likely hurts mask quality."
+        },
+        {
+          "image": "000000000643.jpg",
+          "iou": 0.0,
+          "false_negative": 20,
+          "false_positive": 5,
+          "gt_count": 20,
+          "pred_count": 5,
+          "reason": "20 GT instances (cluttered, \u226510); average IoU 0.00 \u2014 dense overlap likely hurts mask quality."
+        },
+        {
+          "image": "000000000520.jpg",
+          "iou": 0.0,
+          "false_negative": 11,
+          "false_positive": 6,
+          "gt_count": 11,
+          "pred_count": 6,
+          "reason": "11 GT instances (cluttered, \u226510); average IoU 0.00 \u2014 dense overlap likely hurts mask quality."
+        },
+        {
+          "image": "000000000536.jpg",
+          "iou": 0.0,
+          "false_negative": 11,
+          "false_positive": 4,
+          "gt_count": 11,
+          "pred_count": 4,
+          "reason": "11 GT instances (cluttered, \u226510); average IoU 0.00 \u2014 dense overlap likely hurts mask quality."
+        }
+      ]
+    },
+    {
+      "id": "cluttered_scene_missed_instances",
+      "title": "Heavily cluttered \u2014 many missed objects",
+      "summary": "Dense scenes where the model misses a large share of ground-truth instances.",
+      "why_model_struggles": "High instance count increases occlusion and competition between detections. The model often finds the salient objects but fails to recall smaller or partially hidden instances (high false negatives).",
+      "image_count": 25,
+      "typical_signals": {
+        "avg_iou": 0.7127,
+        "avg_false_negative": 14.12,
+        "avg_false_positive": 5.28,
+        "avg_gt_instances": 19.0
+      },
+      "images": [
+        "000000000071.jpg",
+        "000000000110.jpg",
+        "000000000113.jpg",
+        "000000000127.jpg",
+        "000000000164.jpg",
+        "000000000196.jpg",
+        "000000000241.jpg",
+        "000000000257.jpg",
+        "000000000294.jpg",
+        "000000000308.jpg",
+        "000000000315.jpg",
+        "000000000328.jpg",
+        "000000000357.jpg",
+        "000000000384.jpg",
+        "000000000389.jpg",
+        "000000000395.jpg",
+        "000000000446.jpg",
+        "000000000531.jpg",
+        "000000000540.jpg",
+        "000000000542.jpg",
+        "000000000544.jpg",
+        "000000000564.jpg",
+        "000000000584.jpg",
+        "000000000612.jpg",
+        "000000000641.jpg"
+      ],
+      "examples": [
+        {
+          "image": "000000000164.jpg",
+          "iou": 0.7841,
+          "false_negative": 37,
+          "false_positive": 6,
+          "gt_count": 40,
+          "pred_count": 9,
+          "reason": "40 GT instances (cluttered); 37 missed (92% of GT) \u2014 model recalls only part of the crowded scene."
+        },
+        {
+          "image": "000000000315.jpg",
+          "iou": 0.6842,
+          "false_negative": 33,
+          "false_positive": 8,
+          "gt_count": 38,
+          "pred_count": 13,
+          "reason": "38 GT instances (cluttered); 33 missed (87% of GT) \u2014 model recalls only part of the crowded scene."
+        },
+        {
+          "image": "000000000196.jpg",
+          "iou": 0.7465,
+          "false_negative": 30,
+          "false_positive": 5,
+          "gt_count": 42,
+          "pred_count": 17,
+          "reason": "42 GT instances (cluttered); 30 missed (71% of GT) \u2014 model recalls only part of the crowded scene."
+        },
+        {
+          "image": "000000000257.jpg",
+          "iou": 0.6803,
+          "false_negative": 22,
+          "false_positive": 10,
+          "gt_count": 33,
+          "pred_count": 22,
+          "reason": "33 GT instances (cluttered); 22 missed (67% of GT) \u2014 model recalls only part of the crowded scene."
+        },
+        {
+          "image": "000000000540.jpg",
+          "iou": 0.5345,
+          "false_negative": 19,
+          "false_positive": 0,
+          "gt_count": 20,
+          "pred_count": 1,
+          "reason": "20 GT instances (cluttered); 19 missed (95% of GT) \u2014 model recalls only part of the crowded scene."
+        },
+        {
+          "image": "000000000294.jpg",
+          "iou": 0.8701,
+          "false_negative": 18,
+          "false_positive": 1,
+          "gt_count": 20,
+          "pred_count": 3,
+          "reason": "20 GT instances (cluttered); 18 missed (90% of GT) \u2014 model recalls only part of the crowded scene."
+        },
+        {
+          "image": "000000000071.jpg",
+          "iou": 0.5549,
+          "false_negative": 15,
+          "false_positive": 3,
+          "gt_count": 16,
+          "pred_count": 5,
+          "reason": "16 GT instances (cluttered); 15 missed (94% of GT) \u2014 model recalls only part of the crowded scene."
+        },
+        {
+          "image": "000000000127.jpg",
+          "iou": 0.7052,
+          "false_negative": 15,
+          "false_positive": 8,
+          "gt_count": 17,
+          "pred_count": 10,
+          "reason": "17 GT instances (cluttered); 15 missed (88% of GT) \u2014 model recalls only part of the crowded scene."
+        }
+      ]
+    },
+    {
+      "id": "total_mask_mismatch",
+      "title": "Detections present but masks do not match",
+      "summary": "Both GT and predictions exist, but matched IoU is zero.",
+      "why_model_struggles": "The model sees something in the image but segment boundaries or classes do not align with any GT instance at the IoU threshold \u2014 wrong object, wrong region, or systematic coordinate/scale mismatch.",
+      "image_count": 19,
+      "typical_signals": {
+        "avg_iou": 0.0,
+        "avg_false_negative": 3.79,
+        "avg_false_positive": 3.11,
+        "avg_gt_instances": 3.79
+      },
+      "images": [
+        "000000000042.jpg",
+        "000000000049.jpg",
+        "000000000061.jpg",
+        "000000000077.jpg",
+        "000000000133.jpg",
+        "000000000136.jpg",
+        "000000000208.jpg",
+        "000000000260.jpg",
+        "000000000309.jpg",
+        "000000000359.jpg",
+        "000000000360.jpg",
+        "000000000472.jpg",
+        "000000000474.jpg",
+        "000000000490.jpg",
+        "000000000491.jpg",
+        "000000000560.jpg",
+        "000000000581.jpg",
+        "000000000590.jpg",
+        "000000000623.jpg"
+      ],
+      "examples": [
+        {
+          "image": "000000000049.jpg",
+          "iou": 0.0,
+          "false_negative": 9,
+          "false_positive": 9,
+          "gt_count": 9,
+          "pred_count": 9,
+          "reason": "GT=9, pred=9, but zero IoU on matches \u2014 detections do not align with any GT mask."
+        },
+        {
+          "image": "000000000077.jpg",
+          "iou": 0.0,
+          "false_negative": 8,
+          "false_positive": 4,
+          "gt_count": 8,
+          "pred_count": 4,
+          "reason": "GT=8, pred=4, but zero IoU on matches \u2014 detections do not align with any GT mask."
+        },
+        {
+          "image": "000000000260.jpg",
+          "iou": 0.0,
+          "false_negative": 7,
+          "false_positive": 7,
+          "gt_count": 7,
+          "pred_count": 7,
+          "reason": "GT=7, pred=7, but zero IoU on matches \u2014 detections do not align with any GT mask."
+        },
+        {
+          "image": "000000000061.jpg",
+          "iou": 0.0,
+          "false_negative": 5,
+          "false_positive": 3,
+          "gt_count": 5,
+          "pred_count": 3,
+          "reason": "GT=5, pred=3, but zero IoU on matches \u2014 detections do not align with any GT mask."
+        },
+        {
+          "image": "000000000560.jpg",
+          "iou": 0.0,
+          "false_negative": 5,
+          "false_positive": 3,
+          "gt_count": 5,
+          "pred_count": 3,
+          "reason": "GT=5, pred=3, but zero IoU on matches \u2014 detections do not align with any GT mask."
+        },
+        {
+          "image": "000000000136.jpg",
+          "iou": 0.0,
+          "false_negative": 4,
+          "false_positive": 4,
+          "gt_count": 4,
+          "pred_count": 4,
+          "reason": "GT=4, pred=4, but zero IoU on matches \u2014 detections do not align with any GT mask."
+        },
+        {
+          "image": "000000000208.jpg",
+          "iou": 0.0,
+          "false_negative": 4,
+          "false_positive": 2,
+          "gt_count": 4,
+          "pred_count": 2,
+          "reason": "GT=4, pred=2, but zero IoU on matches \u2014 detections do not align with any GT mask."
+        },
+        {
+          "image": "000000000309.jpg",
+          "iou": 0.0,
+          "false_negative": 4,
+          "false_positive": 3,
+          "gt_count": 4,
+          "pred_count": 3,
+          "reason": "GT=4, pred=3, but zero IoU on matches \u2014 detections do not align with any GT mask."
+        }
+      ]
+    },
+    {
+      "id": "severe_under_detection",
+      "title": "Severe under-detection",
+      "summary": "Very high false negatives relative to the number of objects.",
+      "why_model_struggles": "The model captures only a fraction of labeled instances. Often seen in busy images, small objects, or classes the weights handle poorly.",
+      "image_count": 8,
+      "typical_signals": {
+        "avg_iou": 0.7408,
+        "avg_false_negative": 5.75,
+        "avg_false_positive": 3.0,
+        "avg_gt_instances": 7.75
+      },
+      "images": [
+        "000000000009.jpg",
+        "000000000074.jpg",
+        "000000000109.jpg",
+        "000000000201.jpg",
+        "000000000247.jpg",
+        "000000000397.jpg",
+        "000000000419.jpg",
+        "000000000486.jpg"
+      ],
+      "examples": [
+        {
+          "image": "000000000247.jpg",
+          "iou": 0.7552,
+          "false_negative": 7,
+          "false_positive": 2,
+          "gt_count": 8,
+          "pred_count": 3,
+          "reason": "7 of 8 instances missed (88%) \u2014 severe recall failure."
+        },
+        {
+          "image": "000000000486.jpg",
+          "iou": 0.7569,
+          "false_negative": 7,
+          "false_positive": 1,
+          "gt_count": 8,
+          "pred_count": 2,
+          "reason": "7 of 8 instances missed (88%) \u2014 severe recall failure."
+        },
+        {
+          "image": "000000000109.jpg",
+          "iou": 0.5718,
+          "false_negative": 6,
+          "false_positive": 5,
+          "gt_count": 8,
+          "pred_count": 7,
+          "reason": "6 of 8 instances missed (75%) \u2014 severe recall failure."
+        },
+        {
+          "image": "000000000074.jpg",
+          "iou": 0.7753,
+          "false_negative": 6,
+          "false_positive": 4,
+          "gt_count": 8,
+          "pred_count": 6,
+          "reason": "6 of 8 instances missed (75%) \u2014 severe recall failure."
+        },
+        {
+          "image": "000000000419.jpg",
+          "iou": 0.675,
+          "false_negative": 5,
+          "false_positive": 1,
+          "gt_count": 7,
+          "pred_count": 3,
+          "reason": "5 of 7 instances missed (71%) \u2014 severe recall failure."
+        },
+        {
+          "image": "000000000397.jpg",
+          "iou": 0.6966,
+          "false_negative": 5,
+          "false_positive": 1,
+          "gt_count": 7,
+          "pred_count": 3,
+          "reason": "5 of 7 instances missed (71%) \u2014 severe recall failure."
+        },
+        {
+          "image": "000000000201.jpg",
+          "iou": 0.8112,
+          "false_negative": 5,
+          "false_positive": 7,
+          "gt_count": 8,
+          "pred_count": 10,
+          "reason": "5 of 8 instances missed (62%) \u2014 severe recall failure."
+        },
+        {
+          "image": "000000000009.jpg",
+          "iou": 0.8847,
+          "false_negative": 5,
+          "false_positive": 3,
+          "gt_count": 8,
+          "pred_count": 7,
+          "reason": "5 of 8 instances missed (62%) \u2014 severe recall failure."
+        }
+      ]
+    }
+  ],
+  "highlighted_cases": {
+    "low_iou": [
+      "000000000042.jpg",
+      "000000000049.jpg",
+      "000000000061.jpg",
+      "000000000077.jpg",
+      "000000000133.jpg",
+      "000000000136.jpg",
+      "000000000149.jpg",
+      "000000000208.jpg",
+      "000000000260.jpg",
+      "000000000309.jpg",
+      "000000000359.jpg",
+      "000000000360.jpg",
+      "000000000472.jpg",
+      "000000000474.jpg",
+      "000000000490.jpg",
+      "000000000491.jpg",
+      "000000000514.jpg",
+      "000000000520.jpg",
+      "000000000536.jpg",
+      "000000000560.jpg",
+      "000000000581.jpg",
+      "000000000590.jpg",
+      "000000000623.jpg",
+      "000000000643.jpg",
+      "sample.jpg"
+    ],
+    "false_negative": [
+      "000000000009.jpg",
+      "000000000042.jpg",
+      "000000000049.jpg",
+      "000000000061.jpg",
+      "000000000071.jpg",
+      "000000000074.jpg",
+      "000000000077.jpg",
+      "000000000109.jpg",
+      "000000000110.jpg",
+      "000000000113.jpg",
+      "000000000127.jpg",
+      "000000000133.jpg",
+      "000000000136.jpg",
+      "000000000149.jpg",
+      "000000000164.jpg",
+      "000000000196.jpg",
+      "000000000201.jpg",
+      "000000000208.jpg",
+      "000000000241.jpg",
+      "000000000247.jpg",
+      "000000000257.jpg",
+      "000000000260.jpg",
+      "000000000294.jpg",
+      "000000000308.jpg",
+      "000000000309.jpg",
+      "000000000315.jpg",
+      "000000000328.jpg",
+      "000000000357.jpg",
+      "000000000359.jpg",
+      "000000000360.jpg",
+      "000000000384.jpg",
+      "000000000389.jpg",
+      "000000000395.jpg",
+      "000000000397.jpg",
+      "000000000419.jpg",
+      "000000000446.jpg",
+      "000000000472.jpg",
+      "000000000474.jpg",
+      "000000000486.jpg",
+      "000000000490.jpg",
+      "000000000491.jpg",
+      "000000000520.jpg",
+      "000000000531.jpg",
+      "000000000536.jpg",
+      "000000000540.jpg",
+      "000000000542.jpg",
+      "000000000544.jpg",
+      "000000000560.jpg",
+      "000000000564.jpg",
+      "000000000581.jpg",
+      "000000000584.jpg",
+      "000000000590.jpg",
+      "000000000612.jpg",
+      "000000000623.jpg",
+      "000000000641.jpg",
+      "000000000643.jpg"
+    ],
+    "classification_error": [
+      "000000000009.jpg",
+      "000000000042.jpg",
+      "000000000049.jpg",
+      "000000000061.jpg",
+      "000000000071.jpg",
+      "000000000074.jpg",
+      "000000000077.jpg",
+      "000000000109.jpg",
+      "000000000110.jpg",
+      "000000000113.jpg",
+      "000000000127.jpg",
+      "000000000133.jpg",
+      "000000000136.jpg",
+      "000000000149.jpg",
+      "000000000164.jpg",
+      "000000000196.jpg",
+      "000000000201.jpg",
+      "000000000208.jpg",
+      "000000000241.jpg",
+      "000000000247.jpg",
+      "000000000250.jpg",
+      "000000000257.jpg",
+      "000000000260.jpg",
+      "000000000294.jpg",
+      "000000000308.jpg",
+      "000000000309.jpg",
+      "000000000315.jpg",
+      "000000000328.jpg",
+      "000000000357.jpg",
+      "000000000359.jpg",
+      "000000000360.jpg",
+      "000000000384.jpg",
+      "000000000389.jpg",
+      "000000000395.jpg",
+      "000000000397.jpg",
+      "000000000419.jpg",
+      "000000000446.jpg",
+      "000000000472.jpg",
+      "000000000474.jpg",
+      "000000000486.jpg",
+      "000000000490.jpg",
+      "000000000491.jpg",
+      "000000000508.jpg",
+      "000000000514.jpg",
+      "000000000520.jpg",
+      "000000000531.jpg",
+      "000000000536.jpg",
+      "000000000540.jpg",
+      "000000000542.jpg",
+      "000000000544.jpg",
+      "000000000560.jpg",
+      "000000000564.jpg",
+      "000000000581.jpg",
+      "000000000584.jpg",
+      "000000000590.jpg",
+      "000000000612.jpg",
+      "000000000623.jpg",
+      "000000000641.jpg",
+      "000000000643.jpg",
+      "sample.jpg"
+    ],
+    "no_segmentation": [
+      "000000000250.jpg",
+      "000000000508.jpg",
+      "000000000514.jpg"
+    ],
+    "no_groundtruth": [
+      "000000000250.jpg",
+      "000000000508.jpg",
+      "sample.jpg"
+    ],
+    "false_positive": [
+      "000000000009.jpg",
+      "000000000042.jpg",
+      "000000000049.jpg",
+      "000000000061.jpg",
+      "000000000071.jpg",
+      "000000000074.jpg",
+      "000000000077.jpg",
+      "000000000109.jpg",
+      "000000000110.jpg",
+      "000000000113.jpg",
+      "000000000127.jpg",
+      "000000000133.jpg",
+      "000000000136.jpg",
+      "000000000149.jpg",
+      "000000000164.jpg",
+      "000000000196.jpg",
+      "000000000201.jpg",
+      "000000000208.jpg",
+      "000000000241.jpg",
+      "000000000247.jpg",
+      "000000000257.jpg",
+      "000000000260.jpg",
+      "000000000294.jpg",
+      "000000000308.jpg",
+      "000000000309.jpg",
+      "000000000315.jpg",
+      "000000000328.jpg",
+      "000000000357.jpg",
+      "000000000359.jpg",
+      "000000000360.jpg",
+      "000000000384.jpg",
+      "000000000389.jpg",
+      "000000000395.jpg",
+      "000000000397.jpg",
+      "000000000419.jpg",
+      "000000000446.jpg",
+      "000000000472.jpg",
+      "000000000474.jpg",
+      "000000000486.jpg",
+      "000000000490.jpg",
+      "000000000491.jpg",
+      "000000000520.jpg",
+      "000000000531.jpg",
+      "000000000536.jpg",
+      "000000000542.jpg",
+      "000000000544.jpg",
+      "000000000560.jpg",
+      "000000000564.jpg",
+      "000000000581.jpg",
+      "000000000584.jpg",
+      "000000000590.jpg",
+      "000000000612.jpg",
+      "000000000623.jpg",
+      "000000000641.jpg",
+      "000000000643.jpg",
+      "sample.jpg"
+    ]
+  },
+  "observations": [
+    {
+      "image": "000000000514.jpg",
+      "stem": "000000000514",
+      "severity": "critical",
+      "issues": [
+        "no_segmentation",
+        "low_iou",
+        "classification_error"
+      ],
+      "notes": "Model produced no instances while ground truth has 1 instance(s). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth.",
+      "metrics": {
+        "image": "000000000514.jpg",
+        "iou": 0.0,
+        "dice": 0.0,
+        "pixel_accuracy": 0.0,
+        "false_negative": 1,
+        "false_positive": 0,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 1.0,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 1,
+      "pred_count": 0,
+      "struggle_category": "no_segmentation_output",
+      "struggle_category_title": "No segmentation output",
+      "struggle_reason": "No prediction instances (GT=1, pred=0). Model produced no instances while ground truth has 1 instance(s). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth."
+    },
+    {
+      "image": "000000000250.jpg",
+      "stem": "000000000250",
+      "severity": "critical",
+      "issues": [
+        "no_segmentation",
+        "no_groundtruth",
+        "classification_error"
+      ],
+      "notes": "No segmentation output (empty labels). Listed under missing_groundtruth \u2014 no ground-truth file to compare against. No ground-truth label file for this image; metrics are not fully comparable. Instance count or class alignment does not match ground truth.",
+      "metrics": {
+        "image": "000000000250.jpg",
+        "iou": 0.0,
+        "dice": 0.0,
+        "pixel_accuracy": 1.0,
+        "false_negative": 0,
+        "false_positive": 0,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.0,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 0,
+      "pred_count": 0,
+      "struggle_category": "no_segmentation_output",
+      "struggle_category_title": "No segmentation output",
+      "struggle_reason": "No prediction instances (GT=0, pred=0). No segmentation output (empty labels). Listed under missing_groundtruth \u2014 no ground-truth file to compare against. No ground-truth label file for this image; metrics are not fully comparable. Instance count or class alignment does not match ground truth."
+    },
+    {
+      "image": "000000000508.jpg",
+      "stem": "000000000508",
+      "severity": "critical",
+      "issues": [
+        "no_segmentation",
+        "no_groundtruth",
+        "classification_error"
+      ],
+      "notes": "No segmentation output (empty labels). Listed under missing_groundtruth \u2014 no ground-truth file to compare against. No ground-truth label file for this image; metrics are not fully comparable. Instance count or class alignment does not match ground truth.",
+      "metrics": {
+        "image": "000000000508.jpg",
+        "iou": 0.0,
+        "dice": 0.0,
+        "pixel_accuracy": 1.0,
+        "false_negative": 0,
+        "false_positive": 0,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.0,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 0,
+      "pred_count": 0,
+      "struggle_category": "no_segmentation_output",
+      "struggle_category_title": "No segmentation output",
+      "struggle_reason": "No prediction instances (GT=0, pred=0). No segmentation output (empty labels). Listed under missing_groundtruth \u2014 no ground-truth file to compare against. No ground-truth label file for this image; metrics are not fully comparable. Instance count or class alignment does not match ground truth."
+    },
+    {
+      "image": "000000000149.jpg",
+      "stem": "000000000149",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "22 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 6 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000149.jpg",
+        "iou": 0.0,
+        "dice": 0.1011,
+        "pixel_accuracy": 0.0532,
+        "false_negative": 22,
+        "false_positive": 6,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.8989,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 22,
+      "pred_count": 6,
+      "segmented_image": "images/000000000149_segmented.png",
+      "struggle_category": "cluttered_scene_low_iou",
+      "struggle_category_title": "Heavily cluttered \u2014 low mask overlap",
+      "struggle_reason": "22 GT instances (cluttered, \u226510); average IoU 0.00 \u2014 dense overlap likely hurts mask quality."
+    },
+    {
+      "image": "000000000643.jpg",
+      "stem": "000000000643",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "20 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 5 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000643.jpg",
+        "iou": 0.0,
+        "dice": 0.5728,
+        "pixel_accuracy": 0.4013,
+        "false_negative": 20,
+        "false_positive": 5,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.4272,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 20,
+      "pred_count": 5,
+      "segmented_image": "images/000000000643_segmented.png",
+      "struggle_category": "cluttered_scene_low_iou",
+      "struggle_category_title": "Heavily cluttered \u2014 low mask overlap",
+      "struggle_reason": "20 GT instances (cluttered, \u226510); average IoU 0.00 \u2014 dense overlap likely hurts mask quality."
+    },
+    {
+      "image": "000000000520.jpg",
+      "stem": "000000000520",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "11 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 6 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000520.jpg",
+        "iou": 0.0,
+        "dice": 0.4528,
+        "pixel_accuracy": 0.2927,
+        "false_negative": 11,
+        "false_positive": 6,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.5472,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 11,
+      "pred_count": 6,
+      "segmented_image": "images/000000000520_segmented.png",
+      "struggle_category": "cluttered_scene_low_iou",
+      "struggle_category_title": "Heavily cluttered \u2014 low mask overlap",
+      "struggle_reason": "11 GT instances (cluttered, \u226510); average IoU 0.00 \u2014 dense overlap likely hurts mask quality."
+    },
+    {
+      "image": "000000000536.jpg",
+      "stem": "000000000536",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "11 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 4 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000536.jpg",
+        "iou": 0.0,
+        "dice": 0.6205,
+        "pixel_accuracy": 0.4498,
+        "false_negative": 11,
+        "false_positive": 4,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.3795,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 11,
+      "pred_count": 4,
+      "segmented_image": "images/000000000536_segmented.png",
+      "struggle_category": "cluttered_scene_low_iou",
+      "struggle_category_title": "Heavily cluttered \u2014 low mask overlap",
+      "struggle_reason": "11 GT instances (cluttered, \u226510); average IoU 0.00 \u2014 dense overlap likely hurts mask quality."
+    },
+    {
+      "image": "000000000164.jpg",
+      "stem": "000000000164",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "37 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 6 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000164.jpg",
+        "iou": 0.7841,
+        "dice": 0.8704,
+        "pixel_accuracy": 0.7841,
+        "false_negative": 37,
+        "false_positive": 6,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.1296,
+        "duplicate_masks": 1,
+        "classification_correct": false
+      },
+      "gt_count": 40,
+      "pred_count": 9,
+      "segmented_image": "images/000000000164_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "40 GT instances (cluttered); 37 missed (92% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000315.jpg",
+      "stem": "000000000315",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "33 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 8 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000315.jpg",
+        "iou": 0.6842,
+        "dice": 0.8105,
+        "pixel_accuracy": 0.6842,
+        "false_negative": 33,
+        "false_positive": 8,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.1895,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 38,
+      "pred_count": 13,
+      "segmented_image": "images/000000000315_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "38 GT instances (cluttered); 33 missed (87% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000196.jpg",
+      "stem": "000000000196",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "30 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 5 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000196.jpg",
+        "iou": 0.7465,
+        "dice": 0.8493,
+        "pixel_accuracy": 0.7465,
+        "false_negative": 30,
+        "false_positive": 5,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.1507,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 42,
+      "pred_count": 17,
+      "segmented_image": "images/000000000196_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "42 GT instances (cluttered); 30 missed (71% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000257.jpg",
+      "stem": "000000000257",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "22 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 10 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000257.jpg",
+        "iou": 0.6803,
+        "dice": 0.8049,
+        "pixel_accuracy": 0.6803,
+        "false_negative": 22,
+        "false_positive": 10,
+        "under_segmentation": 0,
+        "over_segmentation": 1,
+        "boundary_error": 0.1951,
+        "duplicate_masks": 2,
+        "classification_correct": false
+      },
+      "gt_count": 33,
+      "pred_count": 22,
+      "segmented_image": "images/000000000257_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "33 GT instances (cluttered); 22 missed (67% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000540.jpg",
+      "stem": "000000000540",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error"
+      ],
+      "notes": "19 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth.",
+      "metrics": {
+        "image": "000000000540.jpg",
+        "iou": 0.5345,
+        "dice": 0.6967,
+        "pixel_accuracy": 0.5345,
+        "false_negative": 19,
+        "false_positive": 0,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.3033,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 20,
+      "pred_count": 1,
+      "segmented_image": "images/000000000540_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "20 GT instances (cluttered); 19 missed (95% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000294.jpg",
+      "stem": "000000000294",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "18 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 1 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000294.jpg",
+        "iou": 0.8701,
+        "dice": 0.9305,
+        "pixel_accuracy": 0.8701,
+        "false_negative": 18,
+        "false_positive": 1,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.0695,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 20,
+      "pred_count": 3,
+      "segmented_image": "images/000000000294_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "20 GT instances (cluttered); 18 missed (90% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000071.jpg",
+      "stem": "000000000071",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "15 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000071.jpg",
+        "iou": 0.5549,
+        "dice": 0.7138,
+        "pixel_accuracy": 0.5549,
+        "false_negative": 15,
+        "false_positive": 3,
+        "under_segmentation": 0,
+        "over_segmentation": 1,
+        "boundary_error": 0.2862,
+        "duplicate_masks": 1,
+        "classification_correct": false
+      },
+      "gt_count": 16,
+      "pred_count": 5,
+      "segmented_image": "images/000000000071_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "16 GT instances (cluttered); 15 missed (94% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000127.jpg",
+      "stem": "000000000127",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "15 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 8 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000127.jpg",
+        "iou": 0.7052,
+        "dice": 0.8271,
+        "pixel_accuracy": 0.7052,
+        "false_negative": 15,
+        "false_positive": 8,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.1729,
+        "duplicate_masks": 2,
+        "classification_correct": false
+      },
+      "gt_count": 17,
+      "pred_count": 10,
+      "segmented_image": "images/000000000127_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "17 GT instances (cluttered); 15 missed (88% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000110.jpg",
+      "stem": "000000000110",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "13 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 6 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000110.jpg",
+        "iou": 0.7327,
+        "dice": 0.8405,
+        "pixel_accuracy": 0.7327,
+        "false_negative": 13,
+        "false_positive": 6,
+        "under_segmentation": 0,
+        "over_segmentation": 1,
+        "boundary_error": 0.1595,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 24,
+      "pred_count": 18,
+      "segmented_image": "images/000000000110_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "24 GT instances (cluttered); 13 missed (54% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000113.jpg",
+      "stem": "000000000113",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "12 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000113.jpg",
+        "iou": 0.8275,
+        "dice": 0.9033,
+        "pixel_accuracy": 0.8275,
+        "false_negative": 12,
+        "false_positive": 2,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.0967,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 18,
+      "pred_count": 8,
+      "segmented_image": "images/000000000113_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "18 GT instances (cluttered); 12 missed (67% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000564.jpg",
+      "stem": "000000000564",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "12 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 34 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000564.jpg",
+        "iou": 0.5757,
+        "dice": 0.7297,
+        "pixel_accuracy": 0.5757,
+        "false_negative": 12,
+        "false_positive": 34,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.2703,
+        "duplicate_masks": 4,
+        "classification_correct": false
+      },
+      "gt_count": 16,
+      "pred_count": 38,
+      "segmented_image": "images/000000000564_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "16 GT instances (cluttered); 12 missed (75% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000357.jpg",
+      "stem": "000000000357",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "11 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 4 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000357.jpg",
+        "iou": 0.5745,
+        "dice": 0.7284,
+        "pixel_accuracy": 0.5745,
+        "false_negative": 11,
+        "false_positive": 4,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.2716,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 17,
+      "pred_count": 10,
+      "segmented_image": "images/000000000357_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "17 GT instances (cluttered); 11 missed (65% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000446.jpg",
+      "stem": "000000000446",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "11 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000446.jpg",
+        "iou": 0.7453,
+        "dice": 0.8433,
+        "pixel_accuracy": 0.7453,
+        "false_negative": 11,
+        "false_positive": 2,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.1567,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 13,
+      "pred_count": 4,
+      "segmented_image": "images/000000000446_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "13 GT instances (cluttered); 11 missed (85% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000531.jpg",
+      "stem": "000000000531",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "11 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 6 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000531.jpg",
+        "iou": 0.6189,
+        "dice": 0.7596,
+        "pixel_accuracy": 0.6189,
+        "false_negative": 11,
+        "false_positive": 6,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.2404,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 15,
+      "pred_count": 10,
+      "segmented_image": "images/000000000531_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "15 GT instances (cluttered); 11 missed (73% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000542.jpg",
+      "stem": "000000000542",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "11 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 5 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000542.jpg",
+        "iou": 0.6459,
+        "dice": 0.7831,
+        "pixel_accuracy": 0.6459,
+        "false_negative": 11,
+        "false_positive": 5,
+        "under_segmentation": 0,
+        "over_segmentation": 1,
+        "boundary_error": 0.2169,
+        "duplicate_masks": 1,
+        "classification_correct": false
+      },
+      "gt_count": 17,
+      "pred_count": 12,
+      "segmented_image": "images/000000000542_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "17 GT instances (cluttered); 11 missed (65% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000641.jpg",
+      "stem": "000000000641",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "11 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000641.jpg",
+        "iou": 0.8175,
+        "dice": 0.8996,
+        "pixel_accuracy": 0.8175,
+        "false_negative": 11,
+        "false_positive": 3,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.1004,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 12,
+      "pred_count": 4,
+      "segmented_image": "images/000000000641_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "12 GT instances (cluttered); 11 missed (92% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000544.jpg",
+      "stem": "000000000544",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "10 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000544.jpg",
+        "iou": 0.6091,
+        "dice": 0.7554,
+        "pixel_accuracy": 0.6091,
+        "false_negative": 10,
+        "false_positive": 3,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.2446,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 16,
+      "pred_count": 9,
+      "segmented_image": "images/000000000544_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "16 GT instances (cluttered); 10 missed (62% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000584.jpg",
+      "stem": "000000000584",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "10 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000584.jpg",
+        "iou": 0.716,
+        "dice": 0.8297,
+        "pixel_accuracy": 0.716,
+        "false_negative": 10,
+        "false_positive": 2,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.1703,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 14,
+      "pred_count": 6,
+      "segmented_image": "images/000000000584_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "14 GT instances (cluttered); 10 missed (71% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000328.jpg",
+      "stem": "000000000328",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "9 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 1 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000328.jpg",
+        "iou": 0.7963,
+        "dice": 0.8865,
+        "pixel_accuracy": 0.7963,
+        "false_negative": 9,
+        "false_positive": 1,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.1135,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 11,
+      "pred_count": 3,
+      "segmented_image": "images/000000000328_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "11 GT instances (cluttered); 9 missed (82% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000384.jpg",
+      "stem": "000000000384",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "9 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000384.jpg",
+        "iou": 0.7792,
+        "dice": 0.8747,
+        "pixel_accuracy": 0.7792,
+        "false_negative": 9,
+        "false_positive": 3,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.1253,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 11,
+      "pred_count": 5,
+      "segmented_image": "images/000000000384_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "11 GT instances (cluttered); 9 missed (82% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000389.jpg",
+      "stem": "000000000389",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "8 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 4 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000389.jpg",
+        "iou": 0.7933,
+        "dice": 0.8777,
+        "pixel_accuracy": 0.7933,
+        "false_negative": 8,
+        "false_positive": 4,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.1223,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 14,
+      "pred_count": 10,
+      "segmented_image": "images/000000000389_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "14 GT instances (cluttered); 8 missed (57% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000395.jpg",
+      "stem": "000000000395",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "8 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 5 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000395.jpg",
+        "iou": 0.7418,
+        "dice": 0.846,
+        "pixel_accuracy": 0.7418,
+        "false_negative": 8,
+        "false_positive": 5,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.154,
+        "duplicate_masks": 1,
+        "classification_correct": false
+      },
+      "gt_count": 13,
+      "pred_count": 10,
+      "segmented_image": "images/000000000395_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "13 GT instances (cluttered); 8 missed (62% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000612.jpg",
+      "stem": "000000000612",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "8 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000612.jpg",
+        "iou": 0.8561,
+        "dice": 0.9217,
+        "pixel_accuracy": 0.8561,
+        "false_negative": 8,
+        "false_positive": 3,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.0783,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 11,
+      "pred_count": 6,
+      "segmented_image": "images/000000000612_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "11 GT instances (cluttered); 8 missed (73% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000241.jpg",
+      "stem": "000000000241",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "5 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000241.jpg",
+        "iou": 0.7986,
+        "dice": 0.8856,
+        "pixel_accuracy": 0.7986,
+        "false_negative": 5,
+        "false_positive": 2,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.1144,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 14,
+      "pred_count": 11,
+      "segmented_image": "images/000000000241_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "14 GT instances (cluttered); 5 missed (36% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000308.jpg",
+      "stem": "000000000308",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "5 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 6 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000308.jpg",
+        "iou": 0.6292,
+        "dice": 0.7694,
+        "pixel_accuracy": 0.6292,
+        "false_negative": 5,
+        "false_positive": 6,
+        "under_segmentation": 0,
+        "over_segmentation": 1,
+        "boundary_error": 0.2306,
+        "duplicate_masks": 2,
+        "classification_correct": false
+      },
+      "gt_count": 13,
+      "pred_count": 15,
+      "segmented_image": "images/000000000308_segmented.png",
+      "struggle_category": "cluttered_scene_missed_instances",
+      "struggle_category_title": "Heavily cluttered \u2014 many missed objects",
+      "struggle_reason": "13 GT instances (cluttered); 5 missed (38% of GT) \u2014 model recalls only part of the crowded scene."
+    },
+    {
+      "image": "000000000247.jpg",
+      "stem": "000000000247",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "7 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000247.jpg",
+        "iou": 0.7552,
+        "dice": 0.8605,
+        "pixel_accuracy": 0.7552,
+        "false_negative": 7,
+        "false_positive": 2,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.1395,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 8,
+      "pred_count": 3,
+      "segmented_image": "images/000000000247_segmented.png",
+      "struggle_category": "severe_under_detection",
+      "struggle_category_title": "Severe under-detection",
+      "struggle_reason": "7 of 8 instances missed (88%) \u2014 severe recall failure."
+    },
+    {
+      "image": "000000000486.jpg",
+      "stem": "000000000486",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "7 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 1 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000486.jpg",
+        "iou": 0.7569,
+        "dice": 0.8617,
+        "pixel_accuracy": 0.7569,
+        "false_negative": 7,
+        "false_positive": 1,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.1383,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 8,
+      "pred_count": 2,
+      "segmented_image": "images/000000000486_segmented.png",
+      "struggle_category": "severe_under_detection",
+      "struggle_category_title": "Severe under-detection",
+      "struggle_reason": "7 of 8 instances missed (88%) \u2014 severe recall failure."
+    },
+    {
+      "image": "000000000074.jpg",
+      "stem": "000000000074",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "6 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 4 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000074.jpg",
+        "iou": 0.7753,
+        "dice": 0.872,
+        "pixel_accuracy": 0.7753,
+        "false_negative": 6,
+        "false_positive": 4,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.128,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 8,
+      "pred_count": 6,
+      "segmented_image": "images/000000000074_segmented.png",
+      "struggle_category": "severe_under_detection",
+      "struggle_category_title": "Severe under-detection",
+      "struggle_reason": "6 of 8 instances missed (75%) \u2014 severe recall failure."
+    },
+    {
+      "image": "000000000109.jpg",
+      "stem": "000000000109",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "6 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 5 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000109.jpg",
+        "iou": 0.5718,
+        "dice": 0.7259,
+        "pixel_accuracy": 0.5718,
+        "false_negative": 6,
+        "false_positive": 5,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.2741,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 8,
+      "pred_count": 7,
+      "segmented_image": "images/000000000109_segmented.png",
+      "struggle_category": "severe_under_detection",
+      "struggle_category_title": "Severe under-detection",
+      "struggle_reason": "6 of 8 instances missed (75%) \u2014 severe recall failure."
+    },
+    {
+      "image": "000000000009.jpg",
+      "stem": "000000000009",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "5 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000009.jpg",
+        "iou": 0.8847,
+        "dice": 0.9378,
+        "pixel_accuracy": 0.8847,
+        "false_negative": 5,
+        "false_positive": 3,
+        "under_segmentation": 0,
+        "over_segmentation": 1,
+        "boundary_error": 0.0622,
+        "duplicate_masks": 1,
+        "classification_correct": false
+      },
+      "gt_count": 8,
+      "pred_count": 7,
+      "segmented_image": "images/000000000009_segmented.png",
+      "struggle_category": "severe_under_detection",
+      "struggle_category_title": "Severe under-detection",
+      "struggle_reason": "5 of 8 instances missed (62%) \u2014 severe recall failure."
+    },
+    {
+      "image": "000000000201.jpg",
+      "stem": "000000000201",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "5 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 7 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000201.jpg",
+        "iou": 0.8112,
+        "dice": 0.8951,
+        "pixel_accuracy": 0.8112,
+        "false_negative": 5,
+        "false_positive": 7,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.1049,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 8,
+      "pred_count": 10,
+      "segmented_image": "images/000000000201_segmented.png",
+      "struggle_category": "severe_under_detection",
+      "struggle_category_title": "Severe under-detection",
+      "struggle_reason": "5 of 8 instances missed (62%) \u2014 severe recall failure."
+    },
+    {
+      "image": "000000000397.jpg",
+      "stem": "000000000397",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "5 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 1 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000397.jpg",
+        "iou": 0.6966,
+        "dice": 0.809,
+        "pixel_accuracy": 0.6966,
+        "false_negative": 5,
+        "false_positive": 1,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.191,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 7,
+      "pred_count": 3,
+      "segmented_image": "images/000000000397_segmented.png",
+      "struggle_category": "severe_under_detection",
+      "struggle_category_title": "Severe under-detection",
+      "struggle_reason": "5 of 7 instances missed (71%) \u2014 severe recall failure."
+    },
+    {
+      "image": "000000000419.jpg",
+      "stem": "000000000419",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "5 ground-truth instance(s) were missed (false negative). Instance count or class alignment does not match ground truth. 1 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000419.jpg",
+        "iou": 0.675,
+        "dice": 0.8028,
+        "pixel_accuracy": 0.675,
+        "false_negative": 5,
+        "false_positive": 1,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.1972,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 7,
+      "pred_count": 3,
+      "segmented_image": "images/000000000419_segmented.png",
+      "struggle_category": "severe_under_detection",
+      "struggle_category_title": "Severe under-detection",
+      "struggle_reason": "5 of 7 instances missed (71%) \u2014 severe recall failure."
+    },
+    {
+      "image": "000000000049.jpg",
+      "stem": "000000000049",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "9 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 9 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000049.jpg",
+        "iou": 0.0,
+        "dice": 0.2096,
+        "pixel_accuracy": 0.117,
+        "false_negative": 9,
+        "false_positive": 9,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.7904,
+        "duplicate_masks": 2,
+        "classification_correct": false
+      },
+      "gt_count": 9,
+      "pred_count": 9,
+      "segmented_image": "images/000000000049_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=9, pred=9, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000077.jpg",
+      "stem": "000000000077",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "8 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 4 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000077.jpg",
+        "iou": 0.0,
+        "dice": 0.2442,
+        "pixel_accuracy": 0.1391,
+        "false_negative": 8,
+        "false_positive": 4,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.7558,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 8,
+      "pred_count": 4,
+      "segmented_image": "images/000000000077_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=8, pred=4, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000260.jpg",
+      "stem": "000000000260",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "7 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 7 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000260.jpg",
+        "iou": 0.0,
+        "dice": 0.4502,
+        "pixel_accuracy": 0.2905,
+        "false_negative": 7,
+        "false_positive": 7,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.5498,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 7,
+      "pred_count": 7,
+      "segmented_image": "images/000000000260_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=7, pred=7, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000061.jpg",
+      "stem": "000000000061",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "5 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000061.jpg",
+        "iou": 0.0,
+        "dice": 0.6084,
+        "pixel_accuracy": 0.4372,
+        "false_negative": 5,
+        "false_positive": 3,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.3916,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 5,
+      "pred_count": 3,
+      "segmented_image": "images/000000000061_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=5, pred=3, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000560.jpg",
+      "stem": "000000000560",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "5 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000560.jpg",
+        "iou": 0.0,
+        "dice": 0.4069,
+        "pixel_accuracy": 0.2554,
+        "false_negative": 5,
+        "false_positive": 3,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.5931,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 5,
+      "pred_count": 3,
+      "segmented_image": "images/000000000560_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=5, pred=3, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000136.jpg",
+      "stem": "000000000136",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "4 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 4 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000136.jpg",
+        "iou": 0.0,
+        "dice": 0.46,
+        "pixel_accuracy": 0.2987,
+        "false_negative": 4,
+        "false_positive": 4,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.54,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 4,
+      "pred_count": 4,
+      "segmented_image": "images/000000000136_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=4, pred=4, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000208.jpg",
+      "stem": "000000000208",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "4 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000208.jpg",
+        "iou": 0.0,
+        "dice": 0.2951,
+        "pixel_accuracy": 0.1731,
+        "false_negative": 4,
+        "false_positive": 2,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.7049,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 4,
+      "pred_count": 2,
+      "segmented_image": "images/000000000208_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=4, pred=2, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000309.jpg",
+      "stem": "000000000309",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "4 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000309.jpg",
+        "iou": 0.0,
+        "dice": 0.7611,
+        "pixel_accuracy": 0.6143,
+        "false_negative": 4,
+        "false_positive": 3,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.2389,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 4,
+      "pred_count": 3,
+      "segmented_image": "images/000000000309_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=4, pred=3, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000359.jpg",
+      "stem": "000000000359",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "4 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000359.jpg",
+        "iou": 0.0,
+        "dice": 0.0,
+        "pixel_accuracy": 0.0,
+        "false_negative": 4,
+        "false_positive": 2,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 1.0,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 4,
+      "pred_count": 2,
+      "segmented_image": "images/000000000359_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=4, pred=2, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000491.jpg",
+      "stem": "000000000491",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "4 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000491.jpg",
+        "iou": 0.0,
+        "dice": 0.7805,
+        "pixel_accuracy": 0.6399,
+        "false_negative": 4,
+        "false_positive": 2,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.2195,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 4,
+      "pred_count": 2,
+      "segmented_image": "images/000000000491_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=4, pred=2, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000623.jpg",
+      "stem": "000000000623",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "4 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000623.jpg",
+        "iou": 0.0,
+        "dice": 0.6435,
+        "pixel_accuracy": 0.4744,
+        "false_negative": 4,
+        "false_positive": 2,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.3565,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 4,
+      "pred_count": 2,
+      "segmented_image": "images/000000000623_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=4, pred=2, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000360.jpg",
+      "stem": "000000000360",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "3 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000360.jpg",
+        "iou": 0.0,
+        "dice": 0.0,
+        "pixel_accuracy": 0.0,
+        "false_negative": 3,
+        "false_positive": 3,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 1.0,
+        "duplicate_masks": 1,
+        "classification_correct": false
+      },
+      "gt_count": 3,
+      "pred_count": 3,
+      "segmented_image": "images/000000000360_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=3, pred=3, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000133.jpg",
+      "stem": "000000000133",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "2 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 1 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000133.jpg",
+        "iou": 0.0,
+        "dice": 0.0,
+        "pixel_accuracy": 0.0,
+        "false_negative": 2,
+        "false_positive": 1,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 1.0,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 2,
+      "pred_count": 1,
+      "segmented_image": "images/000000000133_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=2, pred=1, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000474.jpg",
+      "stem": "000000000474",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "2 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000474.jpg",
+        "iou": 0.0,
+        "dice": 0.5526,
+        "pixel_accuracy": 0.3818,
+        "false_negative": 2,
+        "false_positive": 2,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.4474,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 2,
+      "pred_count": 2,
+      "segmented_image": "images/000000000474_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=2, pred=2, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000490.jpg",
+      "stem": "000000000490",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "2 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 2 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000490.jpg",
+        "iou": 0.0,
+        "dice": 0.0562,
+        "pixel_accuracy": 0.0289,
+        "false_negative": 2,
+        "false_positive": 2,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.9438,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 2,
+      "pred_count": 2,
+      "segmented_image": "images/000000000490_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=2, pred=2, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000590.jpg",
+      "stem": "000000000590",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "2 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000590.jpg",
+        "iou": 0.0,
+        "dice": 0.0,
+        "pixel_accuracy": 0.0,
+        "false_negative": 2,
+        "false_positive": 3,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 1.0,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 2,
+      "pred_count": 3,
+      "segmented_image": "images/000000000590_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=2, pred=3, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000042.jpg",
+      "stem": "000000000042",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "1 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000042.jpg",
+        "iou": 0.0,
+        "dice": 0.7442,
+        "pixel_accuracy": 0.5926,
+        "false_negative": 1,
+        "false_positive": 3,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.2558,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 1,
+      "pred_count": 3,
+      "segmented_image": "images/000000000042_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=1, pred=3, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000472.jpg",
+      "stem": "000000000472",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "1 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 1 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000472.jpg",
+        "iou": 0.0,
+        "dice": 0.1533,
+        "pixel_accuracy": 0.083,
+        "false_negative": 1,
+        "false_positive": 1,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.8467,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 1,
+      "pred_count": 1,
+      "segmented_image": "images/000000000472_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=1, pred=1, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "000000000581.jpg",
+      "stem": "000000000581",
+      "severity": "high",
+      "issues": [
+        "false_negative",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "1 ground-truth instance(s) were missed (false negative). Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 3 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "000000000581.jpg",
+        "iou": 0.0,
+        "dice": 0.3026,
+        "pixel_accuracy": 0.1783,
+        "false_negative": 1,
+        "false_positive": 3,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 0.6974,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 1,
+      "pred_count": 3,
+      "segmented_image": "images/000000000581_segmented.png",
+      "struggle_category": "total_mask_mismatch",
+      "struggle_category_title": "Detections present but masks do not match",
+      "struggle_reason": "GT=1, pred=3, but zero IoU on matches \u2014 detections do not align with any GT mask."
+    },
+    {
+      "image": "sample.jpg",
+      "stem": "sample",
+      "severity": "high",
+      "issues": [
+        "no_groundtruth",
+        "low_iou",
+        "classification_error",
+        "false_positive"
+      ],
+      "notes": "No ground-truth label file for this image; metrics are not fully comparable. Zero average IoU on matched instances \u2014 masks do not overlap ground truth. Instance count or class alignment does not match ground truth. 9 extra predicted instance(s) not matched to ground truth.",
+      "metrics": {
+        "image": "sample.jpg",
+        "iou": 0.0,
+        "dice": 0.0,
+        "pixel_accuracy": 0.0,
+        "false_negative": 0,
+        "false_positive": 9,
+        "under_segmentation": 0,
+        "over_segmentation": 0,
+        "boundary_error": 1.0,
+        "duplicate_masks": 0,
+        "classification_correct": false
+      },
+      "gt_count": 0,
+      "pred_count": 9,
+      "segmented_image": "images/sample_segmented.png",
+      "struggle_category": "unevaluable_no_groundtruth",
+      "struggle_category_title": "Cannot evaluate (no ground truth)",
+      "struggle_reason": "No ground-truth labels available for this image; segmentation output cannot be scored."
+    }
+  ],
+  "missing_predictions": [
+    "000000000656",
+    "000000000659"
+  ],
+  "missing_groundtruth": [
+    "000000000250",
+    "000000000508",
+    "sample"
+  ]
+}

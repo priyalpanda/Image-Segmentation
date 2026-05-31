@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Semantic CLIP report — issue images</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
+    .group { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+    table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+    th, td { border: 1px solid #ccc; padding: 0.4rem 0.6rem; text-align: left; }
+    img.plot { max-width: 100%; }
+    .note { background: #f5f8ff; padding: 1rem; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Semantic grouping (CLIP zero-shot)</h1>
+  <div class="note">
+    <p><strong>60</strong> images from <code>issue_eval/images</code>.</p>
+    <p>Each image is compared to natural-language scene prompts. The highest-scoring category is the semantic group. Prompts are averaged per category (prompt ensembling).</p>
+    <p><strong>Not the same as the K-Means report:</strong> The file issue_cluster_analysis.json groups by K-Means on embedding distance (numeric clusters 0–4, not named themes). This report groups by CLIP text–image similarity to explicit scene descriptions (food, aviation, street, etc.).</p>
+  </div>
+
+  <h2>t-SNE colored by semantic category</h2>
+  <img class="plot" src="tsne_by_semantics.png" alt="t-SNE by semantics"/>
+
+  <h2>Groups by meaning (scene type)</h2>
+  
+            <section class="group">
+              <h3>Sports &amp; recreation — 15 images</h3>
+              <p>Athletes, playing fields, courts, and outdoor sports.</p>
+              <p><em>Avg CLIP confidence in this group: 76.8%</em></p>
+              <ul><li><code>000000000049.jpg</code></li><li><code>000000000077.jpg</code></li><li><code>000000000113.jpg</code></li><li><code>000000000149.jpg</code></li><li><code>000000000201.jpg</code></li><li><code>000000000328.jpg</code></li><li><code>000000000357.jpg</code></li><li><code>000000000360.jpg</code></li><li><code>000000000395.jpg</code></li><li><code>000000000419.jpg</code></li><li><code>000000000474.jpg</code></li><li><code>000000000508.jpg</code></li><li><code>000000000531.jpg</code></li><li><code>000000000544.jpg</code></li><li><code>000000000564.jpg</code></li></ul>
+            </section>
+            
+            <section class="group">
+              <h3>Animals — 10 images</h3>
+              <p>Pets, wildlife, or animal-focused photos.</p>
+              <p><em>Avg CLIP confidence in this group: 77.6%</em></p>
+              <ul><li><code>000000000042.jpg</code></li><li><code>000000000061.jpg</code></li><li><code>000000000074.jpg</code></li><li><code>000000000136.jpg</code></li><li><code>000000000208.jpg</code></li><li><code>000000000309.jpg</code></li><li><code>000000000490.jpg</code></li><li><code>000000000491.jpg</code></li><li><code>000000000581.jpg</code></li><li><code>000000000623.jpg</code></li></ul>
+            </section>
+            
+            <section class="group">
+              <h3>Food &amp; dining — 9 images</h3>
+              <p>Meals, restaurants, kitchens, and table-focused scenes.</p>
+              <p><em>Avg CLIP confidence in this group: 79.7%</em></p>
+              <ul><li><code>000000000009.jpg</code></li><li><code>000000000110.jpg</code></li><li><code>000000000127.jpg</code></li><li><code>000000000196.jpg</code></li><li><code>000000000294.jpg</code></li><li><code>000000000308.jpg</code></li><li><code>000000000397.jpg</code></li><li><code>000000000486.jpg</code></li><li><code>000000000584.jpg</code></li></ul>
+            </section>
+            
+            <section class="group">
+              <h3>Indoor people &amp; crowds — 6 images</h3>
+              <p>Rooms with many people, gatherings, offices, or living spaces.</p>
+              <p><em>Avg CLIP confidence in this group: 66.7%</em></p>
+              <ul><li><code>000000000241.jpg</code></li><li><code>000000000389.jpg</code></li><li><code>000000000446.jpg</code></li><li><code>000000000514.jpg</code></li><li><code>000000000536.jpg</code></li><li><code>000000000643.jpg</code></li></ul>
+            </section>
+            
+            <section class="group">
+              <h3>Aviation &amp; aircraft — 5 images</h3>
+              <p>Planes, airports, runways, and aerial views of aircraft.</p>
+              <p><em>Avg CLIP confidence in this group: 95.2%</em></p>
+              <ul><li><code>000000000247.jpg</code></li><li><code>000000000260.jpg</code></li><li><code>000000000472.jpg</code></li><li><code>000000000540.jpg</code></li><li><code>000000000542.jpg</code></li></ul>
+            </section>
+            
+            <section class="group">
+              <h3>Street &amp; traffic — 5 images</h3>
+              <p>Roads, cars, buses, intersections, and urban traffic scenes.</p>
+              <p><em>Avg CLIP confidence in this group: 70.3%</em></p>
+              <ul><li><code>000000000250.jpg</code></li><li><code>000000000257.jpg</code></li><li><code>000000000359.jpg</code></li><li><code>000000000641.jpg</code></li><li><code>sample.jpg</code></li></ul>
+            </section>
+            
+            <section class="group">
+              <h3>Home interior &amp; objects — 5 images</h3>
+              <p>Furniture, appliances, bathrooms, bedrooms — not primarily food.</p>
+              <p><em>Avg CLIP confidence in this group: 72.2%</em></p>
+              <ul><li><code>000000000133.jpg</code></li><li><code>000000000164.jpg</code></li><li><code>000000000384.jpg</code></li><li><code>000000000560.jpg</code></li><li><code>000000000590.jpg</code></li></ul>
+            </section>
+            
+            <section class="group">
+              <h3>Nature &amp; outdoor landscape — 2 images</h3>
+              <p>Parks, beaches, mountains, sky — not dominated by vehicles or food.</p>
+              <p><em>Avg CLIP confidence in this group: 50.1%</em></p>
+              <ul><li><code>000000000109.jpg</code></li><li><code>000000000315.jpg</code></li></ul>
+            </section>
+            
+            <section class="group">
+              <h3>Rail &amp; trains — 1 images</h3>
+              <p>Trains, tracks, stations, and railway yards.</p>
+              <p><em>Avg CLIP confidence in this group: 99.5%</em></p>
+              <ul><li><code>000000000071.jpg</code></li></ul>
+            </section>
+            
+            <section class="group">
+              <h3>Retail &amp; shops — 1 images</h3>
+              <p>Stores, shelves, products, and shopping environments.</p>
+              <p><em>Avg CLIP confidence in this group: 57.1%</em></p>
+              <ul><li><code>000000000612.jpg</code></li></ul>
+            </section>
+            
+            <section class="group">
+              <h3>Water &amp; boats — 1 images</h3>
+              <p>Boats, harbors, and water-centric scenes.</p>
+              <p><em>Avg CLIP confidence in this group: 64.3%</em></p>
+              <ul><li><code>000000000520.jpg</code></li></ul>
+            </section>
+            
+
+  <h2>Every image — assigned category</h2>
+  <table>
+    <thead><tr><th>Image</th><th>Semantic group</th><th>CLIP confidence</th><th>Runner-up</th><th>Segmentation issue</th></tr></thead>
+    <tbody><tr><td>000000000042.jpg</td><td>Animals</td><td>61.9%</td><td>Retail &amp; shops</td><td>The model often misses entire categories here (e.g. dog). Labeled 1 objects vs 3 detected.…</td></tr><tr><td>000000000061.jpg</td><td>Animals</td><td>75.7%</td><td>Nature &amp; outdoor landscape</td><td>The model often misses entire categories here (e.g. elephant). Labeled 5 objects vs 3 detected.…</td></tr><tr><td>000000000074.jpg</td><td>Animals</td><td>92.4%</td><td>Food &amp; dining</td><td>Some objects were found (6 of 8), but masks may still be wrong shape or class. This image is in the …</td></tr><tr><td>000000000136.jpg</td><td>Animals</td><td>64.1%</td><td>Indoor people &amp; crowds</td><td>Some objects were found (4 of 4), but masks may still be wrong shape or class. This image is in the …</td></tr><tr><td>000000000208.jpg</td><td>Animals</td><td>59.2%</td><td>Food &amp; dining</td><td>The model often misses entire categories here (e.g. toothbrush). Labeled 4 objects vs 2 detected.…</td></tr><tr><td>000000000309.jpg</td><td>Animals</td><td>73.2%</td><td>Sports &amp; recreation</td><td>The model often misses entire categories here (e.g. teddy bear). Labeled 4 objects vs 3 detected.…</td></tr><tr><td>000000000490.jpg</td><td>Animals</td><td>73.5%</td><td>Indoor people &amp; crowds</td><td>Some objects were found (2 of 2), but masks may still be wrong shape or class. This image is in the …</td></tr><tr><td>000000000491.jpg</td><td>Animals</td><td>93.9%</td><td>Retail &amp; shops</td><td>The model often misses entire categories here (e.g. teddy bear). Labeled 4 objects vs 2 detected.…</td></tr><tr><td>000000000581.jpg</td><td>Animals</td><td>98.5%</td><td>Indoor people &amp; crowds</td><td>Some objects were found (3 of 1), but masks may still be wrong shape or class. This image is in the …</td></tr><tr><td>000000000623.jpg</td><td>Animals</td><td>83.3%</td><td>Indoor people &amp; crowds</td><td>The model often misses entire categories here (e.g. bench, chair). Labeled 4 objects vs 2 detected.…</td></tr><tr><td>000000000247.jpg</td><td>Aviation &amp; aircraft</td><td>99.8%</td><td>Animals</td><td>The scene is crowded (8 objects labeled). The model only found about 3, so many things were missed —…</td></tr><tr><td>000000000260.jpg</td><td>Aviation &amp; aircraft</td><td>78.8%</td><td>Rail &amp; trains</td><td>Some objects were found (7 of 7), but masks may still be wrong shape or class. This image is in the …</td></tr><tr><td>000000000472.jpg</td><td>Aviation &amp; aircraft</td><td>98.2%</td><td>Water &amp; boats</td><td>Some objects were found (1 of 1), but masks may still be wrong shape or class. This image is in the …</td></tr><tr><td>000000000540.jpg</td><td>Aviation &amp; aircraft</td><td>99.8%</td><td>Street &amp; traffic</td><td>The scene is crowded (20 objects labeled). The model only found about 1, so many things were missed …</td></tr><tr><td>000000000542.jpg</td><td>Aviation &amp; aircraft</td><td>99.2%</td><td>Indoor people &amp; crowds</td><td>The model often misses entire categories here (e.g. handbag, tie). Labeled 17 objects vs 12 detected…</td></tr><tr><td>000000000009.jpg</td><td>Food &amp; dining</td><td>95.8%</td><td>Retail &amp; shops</td><td>The model often misses entire categories here (e.g. orange). Labeled 8 objects vs 7 detected.…</td></tr><tr><td>000000000110.jpg</td><td>Food &amp; dining</td><td>98.5%</td><td>Indoor people &amp; crowds</td><td>The model often misses entire categories here (e.g. fork). Labeled 24 objects vs 18 detected.…</td></tr><tr><td>000000000127.jpg</td><td>Food &amp; dining</td><td>49.4%</td><td>Nature &amp; outdoor landscape</td><td>The model often misses entire categories here (e.g. person, umbrella, handbag, potted plant…). Label…</td></tr><tr><td>000000000196.jpg</td><td>Food &amp; dining</td><td>99.4%</td><td>Indoor people &amp; crowds</td><td>The scene is crowded (42 objects labeled). The model only found about 17, so many things were missed…</td></tr><tr><td>000000000294.jpg</td><td>Food &amp; dining</td><td>71.4%</td><td>Retail &amp; shops</td><td>The scene is crowded (20 objects labeled). The model only found about 3, so many things were missed …</td></tr><tr><td>000000000308.jpg</td><td>Food &amp; dining</td><td>22.8%</td><td>Sports &amp; recreation</td><td>The model often misses entire categories here (e.g. clock). Labeled 13 objects vs 15 detected.…</td></tr><tr><td>000000000397.jpg</td><td>Food &amp; dining</td><td>98.0%</td><td>Indoor people &amp; crowds</td><td>The scene is crowded (7 objects labeled). The model only found about 3, so many things were missed —…</td></tr><tr><td>000000000486.jpg</td><td>Food &amp; dining</td><td>83.0%</td><td>Retail &amp; shops</td><td>The scene is crowded (8 objects labeled). The model only found about 2, so many things were missed —…</td></tr><tr><td>000000000584.jpg</td><td>Food &amp; dining</td><td>99.5%</td><td>Animals</td><td>The scene is crowded (14 objects labeled). The model only found about 6, so many things were missed …</td></tr><tr><td>000000000133.jpg</td><td>Home interior &amp; objects</td><td>56.4%</td><td>Retail &amp; shops</td><td>The model often misses entire categories here (e.g. teddy bear). Labeled 2 objects vs 1 detected.…</td></tr><tr><td>000000000164.jpg</td><td>Home interior &amp; objects</td><td>61.9%</td><td>Indoor people &amp; crowds</td><td>The scene is crowded (40 objects labeled). The model only found about 9, so many things were missed …</td></tr><tr><td>000000000384.jpg</td><td>Home interior &amp; objects</td><td>60.0%</td><td>Indoor people &amp; crowds</td><td>The scene is crowded (11 objects labeled). The model only found about 5, so many things were missed …</td></tr><tr><td>000000000560.jpg</td><td>Home interior &amp; objects</td><td>94.3%</td><td>Indoor people &amp; crowds</td><td>The model often misses entire categories here (e.g. toilet, cell phone). Labeled 5 objects vs 3 dete…</td></tr><tr><td>000000000590.jpg</td><td>Home interior &amp; objects</td><td>88.6%</td><td>Indoor people &amp; crowds</td><td>The model often misses entire categories here (e.g. bowl). Labeled 2 objects vs 3 detected.…</td></tr><tr><td>000000000241.jpg</td><td>Indoor people &amp; crowds</td><td>82.9%</td><td>Sports &amp; recreation</td><td>The model often misses entire categories here (e.g. potted plant). Labeled 14 objects vs 11 detected…</td></tr><tr><td>000000000389.jpg</td><td>Indoor people &amp; crowds</td><td>44.9%</td><td>Animals</td><td>The model often misses entire categories here (e.g. backpack). Labeled 14 objects vs 10 detected.…</td></tr><tr><td>000000000446.jpg</td><td>Indoor people &amp; crowds</td><td>65.8%</td><td>Animals</td><td>The scene is crowded (13 objects labeled). The model only found about 4, so many things were missed …</td></tr><tr><td>000000000514.jpg</td><td>Indoor people &amp; crowds</td><td>58.6%</td><td>Home interior &amp; objects</td><td>The model found nothing, but 1 object(s) should be there. The scene was effectively skipped.…</td></tr><tr><td>000000000536.jpg</td><td>Indoor people &amp; crowds</td><td>97.3%</td><td>Home interior &amp; objects</td><td>The scene is crowded (11 objects labeled). The model only found about 4, so many things were missed …</td></tr><tr><td>000000000643.jpg</td><td>Indoor people &amp; crowds</td><td>50.4%</td><td>Animals</td><td>The scene is crowded (20 objects labeled). The model only found about 5, so many things were missed …</td></tr><tr><td>000000000109.jpg</td><td>Nature &amp; outdoor landscape</td><td>64.2%</td><td>Water &amp; boats</td><td>The model often misses entire categories here (e.g. dog). Labeled 8 objects vs 7 detected.…</td></tr><tr><td>000000000315.jpg</td><td>Nature &amp; outdoor landscape</td><td>36.0%</td><td>Water &amp; boats</td><td>The scene is crowded (38 objects labeled). The model only found about 13, so many things were missed…</td></tr><tr><td>000000000071.jpg</td><td>Rail &amp; trains</td><td>99.5%</td><td>Street &amp; traffic</td><td>The scene is crowded (16 objects labeled). The model only found about 5, so many things were missed …</td></tr><tr><td>000000000612.jpg</td><td>Retail &amp; shops</td><td>57.1%</td><td>Indoor people &amp; crowds</td><td>Some objects were found (6 of 11), but masks may still be wrong shape or class. This image is in the…</td></tr><tr><td>000000000049.jpg</td><td>Sports &amp; recreation</td><td>84.1%</td><td>Animals</td><td>The model often misses entire categories here (e.g. potted plant). Labeled 9 objects vs 9 detected.…</td></tr><tr><td>000000000077.jpg</td><td>Sports &amp; recreation</td><td>90.9%</td><td>Nature &amp; outdoor landscape</td><td>The model often misses entire categories here (e.g. skateboard). Labeled 8 objects vs 4 detected.…</td></tr><tr><td>000000000113.jpg</td><td>Sports &amp; recreation</td><td>31.4%</td><td>Indoor people &amp; crowds</td><td>The scene is crowded (18 objects labeled). The model only found about 8, so many things were missed …</td></tr><tr><td>000000000149.jpg</td><td>Sports &amp; recreation</td><td>84.4%</td><td>Aviation &amp; aircraft</td><td>The scene is crowded (22 objects labeled). The model only found about 6, so many things were missed …</td></tr><tr><td>000000000201.jpg</td><td>Sports &amp; recreation</td><td>68.5%</td><td>Retail &amp; shops</td><td>Some objects were found (10 of 8), but masks may still be wrong shape or class. This image is in the…</td></tr><tr><td>000000000328.jpg</td><td>Sports &amp; recreation</td><td>33.3%</td><td>Aviation &amp; aircraft</td><td>The scene is crowded (11 objects labeled). The model only found about 3, so many things were missed …</td></tr><tr><td>000000000357.jpg</td><td>Sports &amp; recreation</td><td>98.1%</td><td>Nature &amp; outdoor landscape</td><td>The model often misses entire categories here (e.g. baseball glove). Labeled 17 objects vs 10 detect…</td></tr><tr><td>000000000360.jpg</td><td>Sports &amp; recreation</td><td>94.4%</td><td>Aviation &amp; aircraft</td><td>The model often misses entire categories here (e.g. snowboard). Labeled 3 objects vs 3 detected.…</td></tr><tr><td>000000000395.jpg</td><td>Sports &amp; recreation</td><td>17.3%</td><td>Animals</td><td>Some objects were found (10 of 13), but masks may still be wrong shape or class. This image is in th…</td></tr><tr><td>000000000419.jpg</td><td>Sports &amp; recreation</td><td>99.9%</td><td>Animals</td><td>The scene is crowded (7 objects labeled). The model only found about 3, so many things were missed —…</td></tr><tr><td>000000000474.jpg</td><td>Sports &amp; recreation</td><td>92.5%</td><td>Animals</td><td>Some objects were found (2 of 2), but masks may still be wrong shape or class. This image is in the …</td></tr><tr><td>000000000508.jpg</td><td>Sports &amp; recreation</td><td>74.1%</td><td>Nature &amp; outdoor landscape</td><td>No labeled objects to compare — the model did not produce usable masks for scoring.…</td></tr><tr><td>000000000531.jpg</td><td>Sports &amp; recreation</td><td>98.9%</td><td>Nature &amp; outdoor landscape</td><td>The model often misses entire categories here (e.g. bicycle, sports ball). Labeled 15 objects vs 10 …</td></tr><tr><td>000000000544.jpg</td><td>Sports &amp; recreation</td><td>94.8%</td><td>Indoor people &amp; crowds</td><td>The model often misses entire categories here (e.g. sports ball, baseball bat). Labeled 16 objects v…</td></tr><tr><td>000000000564.jpg</td><td>Sports &amp; recreation</td><td>89.9%</td><td>Indoor people &amp; crowds</td><td>Some objects were found (38 of 16), but masks may still be wrong shape or class. This image is in th…</td></tr><tr><td>000000000250.jpg</td><td>Street &amp; traffic</td><td>50.6%</td><td>Nature &amp; outdoor landscape</td><td>No labeled objects to compare — the model did not produce usable masks for scoring.…</td></tr><tr><td>000000000257.jpg</td><td>Street &amp; traffic</td><td>37.5%</td><td>Nature &amp; outdoor landscape</td><td>The model often misses entire categories here (e.g. handbag). Labeled 33 objects vs 22 detected.…</td></tr><tr><td>000000000359.jpg</td><td>Street &amp; traffic</td><td>70.0%</td><td>Rail &amp; trains</td><td>Some objects were found (2 of 4), but masks may still be wrong shape or class. This image is in the …</td></tr><tr><td>000000000641.jpg</td><td>Street &amp; traffic</td><td>94.9%</td><td>Rail &amp; trains</td><td>The scene is crowded (12 objects labeled). The model only found about 4, so many things were missed …</td></tr><tr><td>sample.jpg</td><td>Street &amp; traffic</td><td>98.2%</td><td>Nature &amp; outdoor landscape</td><td>Some objects were found (9 of 0), but masks may still be wrong shape or class. This image is in the …</td></tr><tr><td>000000000520.jpg</td><td>Water &amp; boats</td><td>64.3%</td><td>Nature &amp; outdoor landscape</td><td>The model often misses entire categories here (e.g. person). Labeled 11 objects vs 6 detected.…</td></tr></tbody>
+  </table>
+</body>
+</html>

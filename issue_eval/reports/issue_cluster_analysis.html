@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Issue image pattern analysis</title>
+  <style>
+    body { font-family: Segoe UI, Arial, sans-serif; margin: 24px; max-width: 960px; color: #222; line-height: 1.5; }
+    h1 { margin-bottom: 0.2em; }
+    .cluster { background: #f6f8fa; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #2c3e50; color: #fff; }
+    img.plot { max-width: 100%; border-radius: 8px; }
+    .box { background: #e8f4fc; padding: 14px; border-radius: 8px; margin: 16px 0; }
+  </style>
+</head>
+<body>
+  <h1>Unsupervised pattern analysis — issue images</h1>
+  <p><strong>60</strong> original photos from <code>issue_eval/images</code> only.
+  No manual sorting — pure math.</p>
+
+  <h2>Method (standard unsupervised computer vision)</h2>
+  <ol>
+    <li><strong>Feature extraction (CNN):</strong> Each row is one CLIP image embedding (L2-normalized). Captures semantic visual similarity (scene type, objects, layout) without using your segmentation labels.</li>
+    <li><strong>Clustering (K-Means):</strong> Images in the same cluster have similar embedding vectors (mathematically close in high-dimensional space).</li>
+    <li><strong>2D maps (t-SNE / UMAP):</strong> Reduce high-dimensional embeddings to a scatter plot so you can see which photos sit near each other.</li>
+  </ol>
+  <p>Backbone: <strong>CLIP ViT-B-32 (openai)</strong> ·
+  Vector size: <strong>512</strong> numbers per image ·
+  K = <strong>5</strong> clusters ·
+  Silhouette: 0.024</p>
+
+  <img class="plot" src="embedding_maps.png" alt="t-SNE and UMAP maps" />
+  <p><img class="plot" src="tsne_clusters.png" alt="t-SNE" style="max-width:48%" />
+  <img class="plot" src="umap_clusters.png" alt="UMAP" style="max-width:48%" /></p>
+
+  <h2>K-Means groups (every image in exactly one cluster)</h2>
+  <p>Auto-selected k=5 for clearer groups (best silhouette was only 0.043 at k=3).</p>
+  
+            <section class="cluster">
+              <h3>People-focused scenes (person, teddy bear, snowboard) — 15 images</h3>
+              <p><strong>In plain English:</strong> People appear often here. Crowds, partial bodies, and overlap make it hard to draw a clean outline around each person.</p>
+              <p><strong>Common COCO objects in this group:</strong> person (16), teddy bear (7), snowboard (6), dog (5), bench (5), umbrella (3)</p>
+              <p>Avg labeled objects per image: 4.7</p>
+              <ul><li><code>000000000042.jpg</code></li><li><code>000000000061.jpg</code></li><li><code>000000000074.jpg</code></li><li><code>000000000127.jpg</code></li><li><code>000000000201.jpg</code></li><li><code>000000000208.jpg</code></li><li><code>000000000250.jpg</code></li><li><code>000000000309.jpg</code></li><li><code>000000000328.jpg</code></li><li><code>000000000359.jpg</code></li><li><code>000000000474.jpg</code></li><li><code>000000000490.jpg</code></li><li><code>000000000491.jpg</code></li><li><code>000000000508.jpg</code></li><li><code>000000000581.jpg</code></li></ul>
+            </section>
+            
+            <section class="cluster">
+              <h3>Busy scenes — lots of objects (person, umbrella, traffic light) — 11 images</h3>
+              <p><strong>In plain English:</strong> These photos have many things in one frame. The model tends to catch the big, obvious objects and miss smaller or overlapping ones — like a busy street or a table full of items.</p>
+              <p><strong>Common COCO objects in this group:</strong> person (69), umbrella (13), traffic light (9), chair (9), bird (8), car (7)</p>
+              <p>Avg labeled objects per image: 14.1</p>
+              <ul><li><code>000000000049.jpg</code></li><li><code>000000000077.jpg</code></li><li><code>000000000109.jpg</code></li><li><code>000000000149.jpg</code></li><li><code>000000000257.jpg</code></li><li><code>000000000315.jpg</code></li><li><code>000000000360.jpg</code></li><li><code>000000000419.jpg</code></li><li><code>000000000472.jpg</code></li><li><code>000000000520.jpg</code></li><li><code>000000000531.jpg</code></li></ul>
+            </section>
+            
+            <section class="cluster">
+              <h3>Busy scenes — lots of objects (car, person, airplane) — 3 images</h3>
+              <p><strong>In plain English:</strong> These photos have many things in one frame. The model tends to catch the big, obvious objects and miss smaller or overlapping ones — like a busy street or a table full of items.</p>
+              <p><strong>Common COCO objects in this group:</strong> car (19), person (12), airplane (4), truck (3), handbag (3), bus (2)</p>
+              <p>Avg labeled objects per image: 15.0</p>
+              <ul><li><code>000000000247.jpg</code></li><li><code>000000000540.jpg</code></li><li><code>000000000542.jpg</code></li></ul>
+            </section>
+            
+            <section class="cluster">
+              <h3>Moderately crowded scenes (person, book, cup) — 24 images</h3>
+              <p><strong>In plain English:</strong> In this group the model regularly skips whole types of objects. Training needs more examples of these scenes and those missing categories.</p>
+              <p><strong>Common COCO objects in this group:</strong> person (84), book (24), cup (22), chair (19), car (14), teddy bear (14)</p>
+              <p>Avg labeled objects per image: 11.7</p>
+              <ul><li><code>000000000071.jpg</code></li><li><code>000000000113.jpg</code></li><li><code>000000000133.jpg</code></li><li><code>000000000136.jpg</code></li><li><code>000000000164.jpg</code></li><li><code>000000000241.jpg</code></li><li><code>000000000260.jpg</code></li><li><code>000000000308.jpg</code></li><li><code>000000000357.jpg</code></li><li><code>000000000384.jpg</code></li><li><code>000000000389.jpg</code></li><li><code>000000000395.jpg</code></li><li><code>000000000446.jpg</code></li><li><code>000000000514.jpg</code></li><li><code>000000000536.jpg</code></li><li><code>000000000544.jpg</code></li><li><code>000000000560.jpg</code></li><li><code>000000000564.jpg</code></li><li><code>000000000590.jpg</code></li><li><code>000000000612.jpg</code></li><li><code>000000000623.jpg</code></li><li><code>000000000641.jpg</code></li><li><code>000000000643.jpg</code></li><li><code>sample.jpg</code></li></ul>
+            </section>
+            
+            <section class="cluster">
+              <h3>Busy scenes — lots of objects (carrot, spoon, bowl) — 7 images</h3>
+              <p><strong>In plain English:</strong> These photos have many things in one frame. The model tends to catch the big, obvious objects and miss smaller or overlapping ones — like a busy street or a table full of items.</p>
+              <p><strong>Common COCO objects in this group:</strong> carrot (22), spoon (20), bowl (18), person (12), broccoli (10), knife (8)</p>
+              <p>Avg labeled objects per image: 17.6</p>
+              <ul><li><code>000000000009.jpg</code></li><li><code>000000000110.jpg</code></li><li><code>000000000196.jpg</code></li><li><code>000000000294.jpg</code></li><li><code>000000000397.jpg</code></li><li><code>000000000486.jpg</code></li><li><code>000000000584.jpg</code></li></ul>
+            </section>
+            
+
+  <h2>COCO classes that show up most in these hard images</h2>
+  <table><thead><tr><th>ID</th><th>COCO class</th><th>Labeled instances</th><th>Share</th></tr></thead>
+  <tbody><tr><td>0</td><td>person</td><td>193</td><td>28.6%</td></tr><tr><td>2</td><td>car</td><td>42</td><td>6.2%</td></tr><tr><td>56</td><td>chair</td><td>33</td><td>4.9%</td></tr><tr><td>41</td><td>cup</td><td>29</td><td>4.3%</td></tr><tr><td>45</td><td>bowl</td><td>26</td><td>3.9%</td></tr><tr><td>73</td><td>book</td><td>26</td><td>3.9%</td></tr><tr><td>51</td><td>carrot</td><td>22</td><td>3.3%</td></tr><tr><td>44</td><td>spoon</td><td>21</td><td>3.1%</td></tr><tr><td>77</td><td>teddy bear</td><td>21</td><td>3.1%</td></tr><tr><td>25</td><td>umbrella</td><td>17</td><td>2.5%</td></tr><tr><td>39</td><td>bottle</td><td>16</td><td>2.4%</td></tr><tr><td>26</td><td>handbag</td><td>15</td><td>2.2%</td></tr></tbody></table>
+
+  <h2>COCO classes the model often never detects here</h2>
+  <table><thead><tr><th>Class</th><th>GT instances</th><th>Images affected</th></tr></thead>
+  <tbody><tr><td>fork</td><td>4</td><td>4</td></tr><tr><td>orange</td><td>4</td><td>1</td></tr><tr><td>mouse</td><td>2</td><td>2</td></tr><tr><td>elephant</td><td>2</td><td>1</td></tr><tr><td>toothbrush</td><td>2</td><td>1</td></tr><tr><td>toilet</td><td>1</td><td>1</td></tr><tr><td>laptop</td><td>1</td><td>1</td></tr></tbody></table>
+
+  <div class="box">
+    <h2>What to collect &amp; how to train better</h2>
+    <h3>Data to collect</h3>
+    <ul><li>More photos like the issue set: many objects per image (10+ labeled instances).</li><li>Scenes with overlap (people in crowds, items on tables, parked cars close together).</li><li>Extra images containing: person, car, chair, cup, bowl — these appear most in failed cases.</li><li>Targeted shots for rarely detected classes: fork, orange, mouse, elephant, toothbrush, toilet, laptop.</li><li>Small objects at medium distance (utensils, sports gear, handheld items).</li><li>Same lighting and camera style as your deployment images (not only clean studio shots).</li></ul>
+    <h3>Training steps</h3>
+    <ul><li>Fine-tune YOLOv8-seg (or your seg model) on COCO-format labels with polygon masks.</li><li>Use mosaic / copy-paste augmentation to simulate crowded scenes.</li><li>Increase max detections per image and slightly lower confidence at inference for dense scenes.</li><li>Oversample training batches from high-FN images listed in this report.</li><li>Add class-focused epochs or loss weight for person and other top failure classes.</li><li>Validate on a held-out set of issue_eval-style crowded images, not only easy single-object images.</li></ul>
+    <h3>Metrics to watch</h3>
+    <ul><li>Recall per class (especially person, car, chair, cup, bowl).</li><li>Mask IoU on images with 10+ instances.</li><li>False negative rate = missed GT instances / total GT instances.</li></ul>
+  </div>
+
+  <h2>Per-image plain-English notes (sample)</h2>
+  <table><thead><tr><th>Image</th><th>Visual group</th><th>What goes wrong</th></tr></thead>
+  <tbody><tr><td>000000000042.jpg</td><td>0</td><td>The model often misses entire categories here (e.g. dog). Labeled 1 objects vs 3 detected....</td></tr><tr><td>000000000061.jpg</td><td>0</td><td>The model often misses entire categories here (e.g. elephant). Labeled 5 objects vs 3 detected....</td></tr><tr><td>000000000074.jpg</td><td>0</td><td>Some objects were found (6 of 8), but masks may still be wrong shape or class. This image is in the hard set because ove...</td></tr><tr><td>000000000127.jpg</td><td>0</td><td>The model often misses entire categories here (e.g. person, umbrella, handbag, potted plant…). Labeled 17 objects vs 10 ...</td></tr><tr><td>000000000201.jpg</td><td>0</td><td>Some objects were found (10 of 8), but masks may still be wrong shape or class. This image is in the hard set because ov...</td></tr><tr><td>000000000208.jpg</td><td>0</td><td>The model often misses entire categories here (e.g. toothbrush). Labeled 4 objects vs 2 detected....</td></tr><tr><td>000000000250.jpg</td><td>0</td><td>No labeled objects to compare — the model did not produce usable masks for scoring....</td></tr><tr><td>000000000309.jpg</td><td>0</td><td>The model often misses entire categories here (e.g. teddy bear). Labeled 4 objects vs 3 detected....</td></tr><tr><td>000000000328.jpg</td><td>0</td><td>The scene is crowded (11 objects labeled). The model only found about 3, so many things were missed — often smaller item...</td></tr><tr><td>000000000359.jpg</td><td>0</td><td>Some objects were found (2 of 4), but masks may still be wrong shape or class. This image is in the hard set because ove...</td></tr><tr><td>000000000474.jpg</td><td>0</td><td>Some objects were found (2 of 2), but masks may still be wrong shape or class. This image is in the hard set because ove...</td></tr><tr><td>000000000490.jpg</td><td>0</td><td>Some objects were found (2 of 2), but masks may still be wrong shape or class. This image is in the hard set because ove...</td></tr><tr><td>000000000491.jpg</td><td>0</td><td>The model often misses entire categories here (e.g. teddy bear). Labeled 4 objects vs 2 detected....</td></tr><tr><td>000000000508.jpg</td><td>0</td><td>No labeled objects to compare — the model did not produce usable masks for scoring....</td></tr><tr><td>000000000581.jpg</td><td>0</td><td>Some objects were found (3 of 1), but masks may still be wrong shape or class. This image is in the hard set because ove...</td></tr><tr><td>000000000049.jpg</td><td>1</td><td>The model often misses entire categories here (e.g. potted plant). Labeled 9 objects vs 9 detected....</td></tr><tr><td>000000000077.jpg</td><td>1</td><td>The model often misses entire categories here (e.g. skateboard). Labeled 8 objects vs 4 detected....</td></tr><tr><td>000000000109.jpg</td><td>1</td><td>The model often misses entire categories here (e.g. dog). Labeled 8 objects vs 7 detected....</td></tr><tr><td>000000000149.jpg</td><td>1</td><td>The scene is crowded (22 objects labeled). The model only found about 6, so many things were missed — often smaller item...</td></tr><tr><td>000000000257.jpg</td><td>1</td><td>The model often misses entire categories here (e.g. handbag). Labeled 33 objects vs 22 detected....</td></tr><tr><td>000000000315.jpg</td><td>1</td><td>The scene is crowded (38 objects labeled). The model only found about 13, so many things were missed — often smaller ite...</td></tr><tr><td>000000000360.jpg</td><td>1</td><td>The model often misses entire categories here (e.g. snowboard). Labeled 3 objects vs 3 detected....</td></tr><tr><td>000000000419.jpg</td><td>1</td><td>The scene is crowded (7 objects labeled). The model only found about 3, so many things were missed — often smaller items...</td></tr><tr><td>000000000472.jpg</td><td>1</td><td>Some objects were found (1 of 1), but masks may still be wrong shape or class. This image is in the hard set because ove...</td></tr><tr><td>000000000520.jpg</td><td>1</td><td>The model often misses entire categories here (e.g. person). Labeled 11 objects vs 6 detected....</td></tr></tbody></table>
+</body>
+</html>
